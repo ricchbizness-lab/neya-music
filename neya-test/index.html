@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, height=1080" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Neya — Music Video</title>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       * {
@@ -13,18 +14,53 @@
       html,
       body {
         margin: 0;
-        width: 1920px;
-        height: 1080px;
+        width: 1080px;
+        height: 1920px;
         overflow: hidden;
         background: #000;
       }
       body {
-        font-family: "Inter", sans-serif;
+        font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
       }
-      code,
-      pre,
-      .monospace {
-        font-family: "JetBrains Mono", monospace;
+
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+      }
+
+      /* Video clips fill the frame edge-to-edge, direct hard cuts (no transition) */
+      video.clip {
+        position: absolute;
+        inset: 0;
+        width: 1080px;
+        height: 1920px;
+        object-fit: cover;
+      }
+
+      /* Lyric line overlay — bottom of screen, cyan bold with glow for legibility */
+      .lyric {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 220px;
+        display: flex;
+        justify-content: center;
+        padding: 0 64px;
+        text-align: center;
+        pointer-events: none;
+      }
+      .lyric span {
+        font-weight: 800;
+        font-size: 64px;
+        line-height: 1.15;
+        color: #249fc0;
+        text-shadow:
+          0 0 12px rgba(36, 159, 192, 0.85),
+          0 0 28px rgba(36, 159, 192, 0.55),
+          0 4px 10px rgba(0, 0, 0, 0.65);
+        letter-spacing: 0.5px;
       }
     </style>
   </head>
@@ -33,26 +69,126 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="10"
-      data-width="1920"
-      data-height="1080"
+      data-width="1080"
+      data-height="1920"
+      data-duration="16"
     >
-      
-      
+      <!--
+        ============================================================
+        VIDEO CLIPS — PLACEHOLDER SOURCES
+        ============================================================
+        Drop the 4 generated Kling clips (each ~4s) into ./assets/
+        and replace the src="" placeholders below. Filenames are
+        placeholders — rename to match whatever you provide, just
+        keep the data-start / data-duration values in sync (4s each,
+        back-to-back, no gaps, no overlap on track 0).
+
+        Using only 3 clips? Delete the #clip-4 block + its matching
+        #lyric-4 block below, and set data-duration="12" on #root.
+      -->
+      <video
+        id="clip-1"
+        class="clip"
+        src="assets/PLACEHOLDER_neya-clip-1.mp4"
+        data-start="0"
+        data-duration="4"
+        data-track-index="0"
+        muted
+        playsinline
+      ></video>
+      <video
+        id="clip-2"
+        class="clip"
+        src="assets/PLACEHOLDER_neya-clip-2.mp4"
+        data-start="4"
+        data-duration="4"
+        data-track-index="0"
+        muted
+        playsinline
+      ></video>
+      <video
+        id="clip-3"
+        class="clip"
+        src="assets/PLACEHOLDER_neya-clip-3.mp4"
+        data-start="8"
+        data-duration="4"
+        data-track-index="0"
+        muted
+        playsinline
+      ></video>
+      <video
+        id="clip-4"
+        class="clip"
+        src="assets/PLACEHOLDER_neya-clip-4.mp4"
+        data-start="12"
+        data-duration="4"
+        data-track-index="0"
+        muted
+        playsinline
+      ></video>
 
       <!--
-        Add your clips here. Example:
-        <div id="title" class="clip" data-start="0" data-duration="5" data-track-index="1"
-             style="font-size: 64px; color: #fff; padding: 40px">
-          Hello World
-        </div>
+        ============================================================
+        LYRIC OVERLAYS — PLACEHOLDER TEXT
+        ============================================================
+        One line per clip, synced 1:1 to the clip it sits over.
+        Replace the placeholder text inside each <span>. Timing
+        (fade in with the clip, fade out just before the next one)
+        is handled in the GSAP timeline below — no changes needed
+        here unless you change the clip durations.
       -->
+      <div id="lyric-1" class="lyric clip" data-start="0" data-duration="4" data-track-index="1">
+        <span>[LYRIC LINE 1 — PLACEHOLDER]</span>
+      </div>
+      <div id="lyric-2" class="lyric clip" data-start="4" data-duration="4" data-track-index="1">
+        <span>[LYRIC LINE 2 — PLACEHOLDER]</span>
+      </div>
+      <div id="lyric-3" class="lyric clip" data-start="8" data-duration="4" data-track-index="1">
+        <span>[LYRIC LINE 3 — PLACEHOLDER]</span>
+      </div>
+      <div id="lyric-4" class="lyric clip" data-start="12" data-duration="4" data-track-index="1">
+        <span>[LYRIC LINE 4 — PLACEHOLDER]</span>
+      </div>
+
+      <!--
+        ============================================================
+        AUDIO TRACK — PLACEHOLDER SOURCE
+        ============================================================
+        Full song / mix, same length as the composition (16s here).
+        Replace the src="" placeholder. Video elements stay muted;
+        this <audio> element carries all the sound.
+      -->
+      <audio
+        id="track-audio"
+        src="assets/PLACEHOLDER_full-audio-track.mp3"
+        data-start="0"
+        data-duration="16"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
     </div>
 
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      // Example: tl.from("#title", { opacity: 0, y: -50, duration: 1 }, 0);
+
+      // Lyric line fade in/out — each line appears with its clip and
+      // fades out just before the next clip's line takes over.
+      const lines = ["#lyric-1", "#lyric-2", "#lyric-3", "#lyric-4"];
+      const clipDuration = 4;
+      const fade = 0.3;
+
+      lines.forEach((selector, i) => {
+        const start = i * clipDuration;
+        tl.fromTo(
+          selector,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: fade, ease: "power2.out" },
+          start,
+        );
+        tl.to(selector, { opacity: 0, duration: fade, ease: "power2.in" }, start + clipDuration - fade);
+      });
+
       window.__timelines["main"] = tl;
     </script>
   </body>
