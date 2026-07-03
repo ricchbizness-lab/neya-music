@@ -1,8 +1,78 @@
-<!doctype html>
+#!/usr/bin/env node
+// Generates index.html from clips.config.json.
+//
+// Edit clips.config.json (number of clips, durations, lyric lines, sources),
+// then re-run `npm run build:composition`. This script is the only thing
+// that writes data-start/data-duration for clips — never hand-edit those
+// values in index.html, they'll be overwritten on the next build.
+
+import { readFileSync, writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+
+const projectRoot = path.dirname(fileURLToPath(import.meta.url)) + "/..";
+const configPath = path.join(projectRoot, "clips.config.json");
+const outPath = path.join(projectRoot, "index.html");
+
+const config = JSON.parse(readFileSync(configPath, "utf8"));
+const { width, height, audio, clips } = config;
+
+if (!Array.isArray(clips) || clips.length === 0) {
+  throw new Error("clips.config.json: `clips` must be a non-empty array");
+}
+
+// data-start is computed by cumulating each preceding clip's duration —
+// never written by hand.
+let cursor = 0;
+const withTiming = clips.map((clip) => {
+  const start = cursor;
+  cursor += clip.duration;
+  return { ...clip, start };
+});
+const totalDuration = cursor;
+
+const videoBlocks = withTiming
+  .map(
+    ({ src, start, duration }, i) => `      <video
+        id="clip-${i + 1}"
+        class="clip"
+        src="${src}"
+        data-start="${start}"
+        data-duration="${duration}"
+        data-track-index="0"
+        muted
+        playsinline
+      ></video>`,
+  )
+  .join("\n");
+
+const lyricBlocks = withTiming
+  .map(
+    ({ lyricLine, start, duration }, i) => `      <div
+        id="lyric-${i + 1}"
+        class="lyric clip"
+        data-start="${start}"
+        data-duration="${duration}"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span>${escapeHtml(lyricLine)}</span>
+      </div>`,
+  )
+  .join("\n");
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+const html = `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1080, height=1920" />
+    <meta name="viewport" content="width=${width}, height=${height}" />
     <title>Neya — Music Video</title>
     <script src="vendor/gsap.min.js"></script>
     <style>
@@ -14,8 +84,8 @@
       html,
       body {
         margin: 0;
-        width: 1080px;
-        height: 1920px;
+        width: ${width}px;
+        height: ${height}px;
         overflow: hidden;
         background: #000;
       }
@@ -25,8 +95,8 @@
 
       #root {
         position: relative;
-        width: 1080px;
-        height: 1920px;
+        width: ${width}px;
+        height: ${height}px;
         overflow: hidden;
       }
 
@@ -34,8 +104,8 @@
       video.clip {
         position: absolute;
         inset: 0;
-        width: 1080px;
-        height: 1920px;
+        width: ${width}px;
+        height: ${height}px;
         object-fit: cover;
         z-index: 1;
       }
@@ -84,146 +154,28 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-width="1080"
-      data-height="1920"
-      data-duration="23"
+      data-width="${width}"
+      data-height="${height}"
+      data-duration="${totalDuration}"
     >
-      <video
-        id="clip-1"
-        class="clip"
-        src="assets/PLACEHOLDER_neya-clip-1.mp4"
-        data-start="0"
-        data-duration="4"
-        data-track-index="0"
-        muted
-        playsinline
-      ></video>
-      <video
-        id="clip-2"
-        class="clip"
-        src="assets/PLACEHOLDER_neya-clip-2.mp4"
-        data-start="4"
-        data-duration="4"
-        data-track-index="0"
-        muted
-        playsinline
-      ></video>
-      <video
-        id="clip-3"
-        class="clip"
-        src="assets/PLACEHOLDER_neya-clip-3.mp4"
-        data-start="8"
-        data-duration="4"
-        data-track-index="0"
-        muted
-        playsinline
-      ></video>
-      <video
-        id="clip-4"
-        class="clip"
-        src="assets/PLACEHOLDER_neya-clip-4.mp4"
-        data-start="12"
-        data-duration="4"
-        data-track-index="0"
-        muted
-        playsinline
-      ></video>
-      <video
-        id="clip-5"
-        class="clip"
-        src="assets/PLACEHOLDER_neya-clip-5.mp4"
-        data-start="16"
-        data-duration="4"
-        data-track-index="0"
-        muted
-        playsinline
-      ></video>
-      <video
-        id="clip-6"
-        class="clip"
-        src="assets/PLACEHOLDER_neya-clip-6.mp4"
-        data-start="20"
-        data-duration="3"
-        data-track-index="0"
-        muted
-        playsinline
-      ></video>
+${videoBlocks}
 
-      <div
-        id="lyric-1"
-        class="lyric clip"
-        data-start="0"
-        data-duration="4"
-        data-track-index="1"
-        data-layout-allow-occlusion
-      >
-        <span>[LYRIC LINE 1 — PLACEHOLDER]</span>
-      </div>
-      <div
-        id="lyric-2"
-        class="lyric clip"
-        data-start="4"
-        data-duration="4"
-        data-track-index="1"
-        data-layout-allow-occlusion
-      >
-        <span>[LYRIC LINE 2 — PLACEHOLDER]</span>
-      </div>
-      <div
-        id="lyric-3"
-        class="lyric clip"
-        data-start="8"
-        data-duration="4"
-        data-track-index="1"
-        data-layout-allow-occlusion
-      >
-        <span>[LYRIC LINE 3 — PLACEHOLDER]</span>
-      </div>
-      <div
-        id="lyric-4"
-        class="lyric clip"
-        data-start="12"
-        data-duration="4"
-        data-track-index="1"
-        data-layout-allow-occlusion
-      >
-        <span>[LYRIC LINE 4 — PLACEHOLDER]</span>
-      </div>
-      <div
-        id="lyric-5"
-        class="lyric clip"
-        data-start="16"
-        data-duration="4"
-        data-track-index="1"
-        data-layout-allow-occlusion
-      >
-        <span>[LYRIC LINE 5 — PLACEHOLDER]</span>
-      </div>
-      <div
-        id="lyric-6"
-        class="lyric clip"
-        data-start="20"
-        data-duration="3"
-        data-track-index="1"
-        data-layout-allow-occlusion
-      >
-        <span>[LYRIC LINE 6 — PLACEHOLDER]</span>
-      </div>
+${lyricBlocks}
 
       <!--
         ============================================================
         AUDIO TRACK — PLACEHOLDER SOURCE
         ============================================================
         Full song / mix, spans the whole composition (duration is
-        computed from clips.config.json, currently 23s).
+        computed from clips.config.json, currently ${totalDuration}s).
         Replace the src="" placeholder. Video elements stay muted;
         this <audio> element carries all the sound.
       -->
       <audio
         id="track-audio"
-        src="assets/PLACEHOLDER_full-audio-track.mp3"
+        src="${audio}"
         data-start="0"
-        data-duration="23"
+        data-duration="${totalDuration}"
         data-track-index="10"
         data-volume="1"
       ></audio>
@@ -253,3 +205,7 @@
     </script>
   </body>
 </html>
+`;
+
+writeFileSync(outPath, html);
+console.log(`Generated index.html — ${clips.length} clips, ${totalDuration}s total`);

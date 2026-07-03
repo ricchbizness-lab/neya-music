@@ -1,0 +1,14 @@
+{
+  "$comment": "Source of truth for the neya-test composition. Edit this file only, then run `npm run build:composition`. data-start values are computed automatically from cumulative durations — do not add them here.",
+  "width": 1080,
+  "height": 1920,
+  "audio": "assets/PLACEHOLDER_full-audio-track.mp3",
+  "clips": [
+    { "src": "assets/PLACEHOLDER_neya-clip-1.mp4", "duration": 4, "lyricLine": "[LYRIC LINE 1 — PLACEHOLDER]" },
+    { "src": "assets/PLACEHOLDER_neya-clip-2.mp4", "duration": 4, "lyricLine": "[LYRIC LINE 2 — PLACEHOLDER]" },
+    { "src": "assets/PLACEHOLDER_neya-clip-3.mp4", "duration": 4, "lyricLine": "[LYRIC LINE 3 — PLACEHOLDER]" },
+    { "src": "assets/PLACEHOLDER_neya-clip-4.mp4", "duration": 4, "lyricLine": "[LYRIC LINE 4 — PLACEHOLDER]" },
+    { "src": "assets/PLACEHOLDER_neya-clip-5.mp4", "duration": 4, "lyricLine": "[LYRIC LINE 5 — PLACEHOLDER]" },
+    { "src": "assets/PLACEHOLDER_neya-clip-6.mp4", "duration": 3, "lyricLine": "[LYRIC LINE 6 — PLACEHOLDER]" }
+  ]
+}
