@@ -1,14 +1,215 @@
 {
-  "$comment": "Source of truth for the neya-test composition. Edit this file only, then run `npm run build:composition`. data-start values are computed automatically from cumulative durations — do not add them here.",
+  "$comment": "Source of truth for the neya-test composition. Edit this file only, then run `npm run build:composition`. `clips` (video track) and `lyrics` (caption track) are independent — clip data-start is computed from cumulative durations, lyric timing comes straight from `start`/`end` (e.g. a transcript). Do not add data-start by hand.",
   "width": 1080,
   "height": 1920,
-  "audio": "assets/PLACEHOLDER_full-audio-track.mp3",
+  "duration": 177.267,
+  "audio": "assets/on-my-wav-neya.mp3",
   "clips": [
-    { "src": "assets/PLACEHOLDER_neya-clip-1.mp4", "duration": 4, "lyricLine": "[LYRIC LINE 1 — PLACEHOLDER]" },
-    { "src": "assets/PLACEHOLDER_neya-clip-2.mp4", "duration": 4, "lyricLine": "[LYRIC LINE 2 — PLACEHOLDER]" },
-    { "src": "assets/PLACEHOLDER_neya-clip-3.mp4", "duration": 4, "lyricLine": "[LYRIC LINE 3 — PLACEHOLDER]" },
-    { "src": "assets/PLACEHOLDER_neya-clip-4.mp4", "duration": 4, "lyricLine": "[LYRIC LINE 4 — PLACEHOLDER]" },
-    { "src": "assets/PLACEHOLDER_neya-clip-5.mp4", "duration": 4, "lyricLine": "[LYRIC LINE 5 — PLACEHOLDER]" },
-    { "src": "assets/PLACEHOLDER_neya-clip-6.mp4", "duration": 3, "lyricLine": "[LYRIC LINE 6 — PLACEHOLDER]" }
+    {
+      "src": "assets/PLACEHOLDER_neya-visual-loop.mp4",
+      "duration": 177.267
+    }
+  ],
+  "lyrics": [
+    {
+      "text": "I'm body watching from the sideline",
+      "start": 19.58,
+      "end": 21.88
+    },
+    {
+      "text": "Wondering how I keep on making this shine",
+      "start": 21.88,
+      "end": 23.74
+    },
+    {
+      "text": "Every step I take is intentional",
+      "start": 23.74,
+      "end": 25.4
+    },
+    {
+      "text": "Every look I give is memorable",
+      "start": 25.92,
+      "end": 27.34
+    },
+    {
+      "text": "You can copy but you can't recreate",
+      "start": 27.34,
+      "end": 29.46
+    },
+    {
+      "text": "Baby that's my superpower state",
+      "start": 29.46,
+      "end": 31.68
+    },
+    {
+      "text": "Don't you try to slow me down",
+      "start": 31.68,
+      "end": 33.88
+    },
+    {
+      "text": "I don't ever look around",
+      "start": 33.88,
+      "end": 35.8
+    },
+    {
+      "text": "Eyes on the prize, no distraction",
+      "start": 35.8,
+      "end": 37.28
+    },
+    {
+      "text": "I was earning silence every crime I wear",
+      "start": 80.26,
+      "end": 82.18
+    },
+    {
+      "text": "I paid in patience baby that's the difference between me and them",
+      "start": 82.28,
+      "end": 85.18
+    },
+    {
+      "text": "I don't chase",
+      "start": 85.18,
+      "end": 86.14
+    },
+    {
+      "text": "I create the trend",
+      "start": 86.22,
+      "end": 87.22
+    },
+    {
+      "text": "You try to slow me down",
+      "start": 87.22,
+      "end": 89.84
+    },
+    {
+      "text": "I don't ever look around",
+      "start": 89.84,
+      "end": 91.68
+    },
+    {
+      "text": "Eyes on the prize, no distraction",
+      "start": 91.68,
+      "end": 93.3
+    },
+    {
+      "text": "Everything I want, main attraction",
+      "start": 93.3,
+      "end": 95.26
+    },
+    {
+      "text": "I'm on my way",
+      "start": 95.26,
+      "end": 96.82
+    },
+    {
+      "text": "I'm on my way",
+      "start": 96.9,
+      "end": 97.8
+    },
+    {
+      "text": "Nobody move like this",
+      "start": 97.8,
+      "end": 99.68
+    },
+    {
+      "text": "Nobody play",
+      "start": 99.76,
+      "end": 100.72
+    },
+    {
+      "text": "I'm on my way",
+      "start": 100.72,
+      "end": 101.8
+    },
+    {
+      "text": "I'm on my way",
+      "start": 101.8,
+      "end": 102.41
+    },
+    {
+      "text": "I'm on my way",
+      "start": 127.45,
+      "end": 128.89
+    },
+    {
+      "text": "I'm on my way",
+      "start": 128.89,
+      "end": 129.77
+    },
+    {
+      "text": "Nobody move like this",
+      "start": 129.77,
+      "end": 131.71
+    },
+    {
+      "text": "Nobody play",
+      "start": 131.77,
+      "end": 132.79
+    },
+    {
+      "text": "I'm on my way",
+      "start": 132.79,
+      "end": 134.19
+    },
+    {
+      "text": "Baby that's me",
+      "start": 134.19,
+      "end": 135.25
+    },
+    {
+      "text": "That's just my way",
+      "start": 135.51,
+      "end": 136.77
+    },
+    {
+      "text": "Body moving hips don't lie",
+      "start": 136.77,
+      "end": 138.23
+    },
+    {
+      "text": "Watch me",
+      "start": 138.23,
+      "end": 138.87
+    },
+    {
+      "text": "Watch me watch me fly",
+      "start": 138.91,
+      "end": 140.33
+    },
+    {
+      "text": "I'm on my way",
+      "start": 140.33,
+      "end": 141.97
+    },
+    {
+      "text": "On my way",
+      "start": 141.97,
+      "end": 142.73
+    },
+    {
+      "text": "Nobody gonna take this with hands",
+      "start": 142.73,
+      "end": 144.97
+    },
+    {
+      "text": "Up if you're on my way",
+      "start": 144.97,
+      "end": 146.25
+    },
+    {
+      "text": "Show me how you move nouve",
+      "start": 146.25,
+      "end": 147.95
+    },
+    {
+      "text": "Watch me",
+      "start": 157.41,
+      "end": 159.27
+    },
+    {
+      "text": "Watch me",
+      "start": 159.63,
+      "end": 160.29
+    }
   ]
 }
