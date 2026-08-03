@@ -41,17 +41,33 @@
         z-index: 1;
       }
 
-      /* Lyric line overlay — bottom of screen, cyan bold with glow for legibility.
+      /* Ambient glow behind the lyrics — pulses on the paused GSAP timeline
+         (never a real-time CSS animation) so it stays frame-accurate under
+         render capture, which scrubs composition time rather than wall time. */
+      .bg-glow {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        background: radial-gradient(
+          circle at 50% 52%,
+          rgba(36, 159, 192, 0.55) 0%,
+          rgba(36, 159, 192, 0) 60%
+        );
+        opacity: 0.12;
+        pointer-events: none;
+      }
+
+      /* Lyric line overlay — vertically + horizontally centered so it never
+         collides with the NEYA wordmark baked into the bottom of the poster.
          Explicit z-index: the runtime's own video-visibility handling can stack
          the active video above later DOM siblings, so this can't rely on
          source order alone to stay on top. */
       .lyric {
         position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 220px;
+        inset: 0;
         z-index: 10;
         display: flex;
+        align-items: center;
         justify-content: center;
         padding: 0 64px;
         text-align: center;
@@ -59,14 +75,19 @@
       }
       .lyric span {
         font-weight: 800;
-        font-size: 64px;
+        font-size: 84px;
         line-height: 1.15;
         color: #249fc0;
         text-shadow:
-          0 0 12px rgba(36, 159, 192, 0.85),
-          0 0 28px rgba(36, 159, 192, 0.55),
+          0 0 14px rgba(36, 159, 192, 0.85),
+          0 0 32px rgba(36, 159, 192, 0.55),
           0 4px 10px rgba(0, 0, 0, 0.65);
         letter-spacing: 0.5px;
+      }
+      /* Karaoke words start dim; the runtime script tweens each one's color
+         to the full glow value as its share of the line's hold time arrives. */
+      .lyric .word {
+        color: rgba(255, 255, 255, 0.4);
       }
     </style>
   </head>
@@ -98,6 +119,8 @@
         data-track-index="0"
       />
 
+      <div id="bg-glow" class="bg-glow"></div>
+
       <div
         id="lyric-1"
         class="lyric clip"
@@ -106,7 +129,7 @@
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Everybody watching from the sideline</span>
+        <span><span class="word">Everybody</span> <span class="word">watching</span> <span class="word">from</span> <span class="word">the</span> <span class="word">sideline</span></span>
       </div>
       <div
         id="lyric-2"
@@ -116,7 +139,7 @@
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Wondering how I keep on making it shine</span>
+        <span><span class="word">Wondering</span> <span class="word">how</span> <span class="word">I</span> <span class="word">keep</span> <span class="word">on</span> <span class="word">making</span> <span class="word">it</span> <span class="word">shine</span></span>
       </div>
       <div
         id="lyric-3"
@@ -126,7 +149,7 @@
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Every step I take is intentional</span>
+        <span><span class="word">Every</span> <span class="word">step</span> <span class="word">I</span> <span class="word">take</span> <span class="word">is</span> <span class="word">intentional</span></span>
       </div>
       <div
         id="lyric-4"
@@ -136,7 +159,7 @@
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Every look I give is memorable</span>
+        <span><span class="word">Every</span> <span class="word">look</span> <span class="word">I</span> <span class="word">give</span> <span class="word">is</span> <span class="word">memorable</span></span>
       </div>
       <div
         id="lyric-5"
@@ -146,7 +169,7 @@
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>You can copy but you can't recreate</span>
+        <span><span class="word">You</span> <span class="word">can</span> <span class="word">copy</span> <span class="word">but</span> <span class="word">you</span> <span class="word">can't</span> <span class="word">recreate</span></span>
       </div>
       <div
         id="lyric-6"
@@ -156,7 +179,7 @@
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Baby that's my superpower state</span>
+        <span><span class="word">Baby</span> <span class="word">that's</span> <span class="word">my</span> <span class="word">superpower</span> <span class="word">state</span></span>
       </div>
       <div
         id="lyric-7"
@@ -166,7 +189,7 @@
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Don't you try to slow me down</span>
+        <span><span class="word">Don't</span> <span class="word">you</span> <span class="word">try</span> <span class="word">to</span> <span class="word">slow</span> <span class="word">me</span> <span class="word">down</span></span>
       </div>
       <div
         id="lyric-8"
@@ -176,7 +199,7 @@
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>I don't ever look around</span>
+        <span><span class="word">I</span> <span class="word">don't</span> <span class="word">ever</span> <span class="word">look</span> <span class="word">around</span></span>
       </div>
       <div
         id="lyric-9"
@@ -186,317 +209,577 @@
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Eyes on the prize, no distraction</span>
+        <span><span class="word">Eyes</span> <span class="word">on</span> <span class="word">the</span> <span class="word">prize,</span> <span class="word">no</span> <span class="word">distraction</span></span>
       </div>
       <div
         id="lyric-10"
+        class="lyric clip"
+        data-start="37.28"
+        data-duration="2.12"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Everything</span> <span class="word">I</span> <span class="word">want,</span> <span class="word">main</span> <span class="word">attraction</span></span>
+      </div>
+      <div
+        id="lyric-11"
+        class="lyric clip"
+        data-start="39.4"
+        data-duration="2.8"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">I'm</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave,</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span></span>
+      </div>
+      <div
+        id="lyric-12"
+        class="lyric clip"
+        data-start="42.2"
+        data-duration="4"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Nobody</span> <span class="word">move</span> <span class="word">like</span> <span class="word">this,</span> <span class="word">nobody</span> <span class="word">play</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span></span>
+      </div>
+      <div
+        id="lyric-13"
+        class="lyric clip"
+        data-start="46.2"
+        data-duration="2.56"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Baby</span> <span class="word">that's</span> <span class="word">Neya,</span> <span class="word">that's</span> <span class="word">just</span> <span class="word">my</span> <span class="word">way</span></span>
+      </div>
+      <div
+        id="lyric-14"
+        class="lyric clip"
+        data-start="48.76"
+        data-duration="1.48"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Body</span> <span class="word">moving</span> <span class="word">hips</span> <span class="word">don't</span> <span class="word">lie</span></span>
+      </div>
+      <div
+        id="lyric-15"
+        class="lyric clip"
+        data-start="50.24"
+        data-duration="2.48"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Watch</span> <span class="word">me,</span> <span class="word">watch</span> <span class="word">me,</span> <span class="word">watch</span> <span class="word">me</span> <span class="word">fly</span></span>
+      </div>
+      <div
+        id="lyric-16"
+        class="lyric clip"
+        data-start="52.72"
+        data-duration="1.89"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">On</span> <span class="word">my</span> <span class="word">wave,</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span></span>
+      </div>
+      <div
+        id="lyric-17"
+        class="lyric clip"
+        data-start="54.61"
+        data-duration="2.17"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Nobody</span> <span class="word">gonna</span> <span class="word">take</span> <span class="word">this</span> <span class="word">away</span></span>
+      </div>
+      <div
+        id="lyric-18"
+        class="lyric clip"
+        data-start="62.43"
+        data-duration="2.32"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Nobody</span> <span class="word">gonna</span> <span class="word">take</span> <span class="word">this</span> <span class="word">away</span></span>
+      </div>
+      <div
+        id="lyric-19"
+        class="lyric clip"
+        data-start="71.51"
+        data-duration="1.36"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">They</span> <span class="word">be</span> <span class="word">asking</span> <span class="word">how</span> <span class="word">I</span> <span class="word">always</span> <span class="word">stay</span></span>
+      </div>
+      <div
+        id="lyric-20"
+        class="lyric clip"
+        data-start="72.87"
+        data-duration="1.21"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Winning,</span> <span class="word">simple</span> <span class="word">answer</span></span>
+      </div>
+      <div
+        id="lyric-21"
+        class="lyric clip"
+        data-start="74.08"
+        data-duration="1.29"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Been</span> <span class="word">on</span> <span class="word">it</span> <span class="word">from</span> <span class="word">the</span> <span class="word">beginning</span></span>
+      </div>
+      <div
+        id="lyric-22"
+        class="lyric clip"
+        data-start="75.37"
+        data-duration="2.22"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">No</span> <span class="word">shortcuts,</span> <span class="word">no</span> <span class="word">fake</span> <span class="word">connections</span></span>
+      </div>
+      <div
+        id="lyric-23"
+        class="lyric clip"
+        data-start="77.59"
+        data-duration="2"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Just</span> <span class="word">me</span> <span class="word">building</span> <span class="word">all</span> <span class="word">my</span> <span class="word">own</span> <span class="word">directions</span></span>
+      </div>
+      <div
+        id="lyric-24"
         class="lyric clip"
         data-start="80.26"
         data-duration="1.92"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Every level up was earned in silence</span>
+        <span><span class="word">Every</span> <span class="word">level</span> <span class="word">up</span> <span class="word">was</span> <span class="word">earned</span> <span class="word">in</span> <span class="word">silence</span></span>
       </div>
       <div
-        id="lyric-11"
+        id="lyric-25"
         class="lyric clip"
         data-start="82.28"
         data-duration="2.9"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Every crown I wear, I paid in patience, baby that's the difference between me and them</span>
+        <span><span class="word">Every</span> <span class="word">crown</span> <span class="word">I</span> <span class="word">wear,</span> <span class="word">I</span> <span class="word">paid</span> <span class="word">in</span> <span class="word">patience,</span> <span class="word">baby</span> <span class="word">that's</span> <span class="word">the</span> <span class="word">difference</span> <span class="word">between</span> <span class="word">me</span> <span class="word">and</span> <span class="word">them</span></span>
       </div>
       <div
-        id="lyric-12"
+        id="lyric-26"
         class="lyric clip"
         data-start="85.18"
         data-duration="0.96"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>I don't chase</span>
+        <span><span class="word">I</span> <span class="word">don't</span> <span class="word">chase</span></span>
       </div>
       <div
-        id="lyric-13"
+        id="lyric-27"
         class="lyric clip"
         data-start="86.22"
         data-duration="1"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>I create the trend</span>
+        <span><span class="word">I</span> <span class="word">create</span> <span class="word">the</span> <span class="word">trend</span></span>
       </div>
       <div
-        id="lyric-14"
+        id="lyric-28"
         class="lyric clip"
         data-start="87.22"
         data-duration="2.62"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Don't you try to slow me down</span>
+        <span><span class="word">Don't</span> <span class="word">you</span> <span class="word">try</span> <span class="word">to</span> <span class="word">slow</span> <span class="word">me</span> <span class="word">down</span></span>
       </div>
       <div
-        id="lyric-15"
+        id="lyric-29"
         class="lyric clip"
         data-start="89.84"
         data-duration="1.84"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>I don't ever look around</span>
+        <span><span class="word">I</span> <span class="word">don't</span> <span class="word">ever</span> <span class="word">look</span> <span class="word">around</span></span>
       </div>
       <div
-        id="lyric-16"
+        id="lyric-30"
         class="lyric clip"
         data-start="91.68"
         data-duration="1.62"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Eyes on the prize, no distraction</span>
+        <span><span class="word">Eyes</span> <span class="word">on</span> <span class="word">the</span> <span class="word">prize,</span> <span class="word">no</span> <span class="word">distraction</span></span>
       </div>
       <div
-        id="lyric-17"
+        id="lyric-31"
         class="lyric clip"
         data-start="93.3"
         data-duration="1.96"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Everything I want, main attraction</span>
+        <span><span class="word">Everything</span> <span class="word">I</span> <span class="word">want,</span> <span class="word">main</span> <span class="word">attraction</span></span>
       </div>
       <div
-        id="lyric-18"
+        id="lyric-32"
         class="lyric clip"
         data-start="95.26"
         data-duration="1.56"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>I'm on my wave</span>
+        <span><span class="word">I'm</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span></span>
       </div>
       <div
-        id="lyric-19"
+        id="lyric-33"
         class="lyric clip"
         data-start="96.9"
         data-duration="0.9"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>On my wave</span>
+        <span><span class="word">On</span> <span class="word">my</span> <span class="word">wave</span></span>
       </div>
       <div
-        id="lyric-20"
+        id="lyric-34"
         class="lyric clip"
         data-start="97.8"
         data-duration="1.88"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Nobody move like this</span>
+        <span><span class="word">Nobody</span> <span class="word">move</span> <span class="word">like</span> <span class="word">this</span></span>
       </div>
       <div
-        id="lyric-21"
+        id="lyric-35"
         class="lyric clip"
         data-start="99.76"
         data-duration="0.96"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Nobody play</span>
+        <span><span class="word">Nobody</span> <span class="word">play</span></span>
       </div>
       <div
-        id="lyric-22"
+        id="lyric-36"
         class="lyric clip"
         data-start="100.72"
         data-duration="1.08"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>I'm on my wave</span>
+        <span><span class="word">I'm</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span></span>
       </div>
       <div
-        id="lyric-23"
+        id="lyric-37"
         class="lyric clip"
         data-start="101.8"
         data-duration="0.61"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>On my wave</span>
+        <span><span class="word">On</span> <span class="word">my</span> <span class="word">wave</span></span>
       </div>
       <div
-        id="lyric-24"
+        id="lyric-38"
+        class="lyric clip"
+        data-start="102.41"
+        data-duration="2.35"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Baby</span> <span class="word">that's</span> <span class="word">Neya,</span> <span class="word">that's</span> <span class="word">just</span> <span class="word">my</span> <span class="word">way</span></span>
+      </div>
+      <div
+        id="lyric-39"
+        class="lyric clip"
+        data-start="104.76"
+        data-duration="1.5"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Body</span> <span class="word">moving</span> <span class="word">hips</span> <span class="word">don't</span> <span class="word">lie</span></span>
+      </div>
+      <div
+        id="lyric-40"
+        class="lyric clip"
+        data-start="106.26"
+        data-duration="2.43"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Watch</span> <span class="word">me,</span> <span class="word">watch</span> <span class="word">me</span> <span class="word">fly</span></span>
+      </div>
+      <div
+        id="lyric-41"
+        class="lyric clip"
+        data-start="108.69"
+        data-duration="1.94"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">On</span> <span class="word">my</span> <span class="word">wave,</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span></span>
+      </div>
+      <div
+        id="lyric-42"
+        class="lyric clip"
+        data-start="110.63"
+        data-duration="2.18"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Nobody</span> <span class="word">gonna</span> <span class="word">take</span> <span class="word">this</span> <span class="word">away</span></span>
+      </div>
+      <div
+        id="lyric-43"
+        class="lyric clip"
+        data-start="113.37"
+        data-duration="3.33"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Mmm...</span></span>
+      </div>
+      <div
+        id="lyric-44"
+        class="lyric clip"
+        data-start="116.7"
+        data-duration="3.35"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Watch</span> <span class="word">this</span></span>
+      </div>
+      <div
+        id="lyric-45"
+        class="lyric clip"
+        data-start="123.6"
+        data-duration="1.14"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Mmm...</span></span>
+      </div>
+      <div
+        id="lyric-46"
         class="lyric clip"
         data-start="127.45"
         data-duration="1.44"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>I'm on my wave</span>
+        <span><span class="word">I'm</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span></span>
       </div>
       <div
-        id="lyric-25"
+        id="lyric-47"
         class="lyric clip"
         data-start="128.89"
         data-duration="0.88"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>On my wave</span>
+        <span><span class="word">On</span> <span class="word">my</span> <span class="word">wave</span></span>
       </div>
       <div
-        id="lyric-26"
+        id="lyric-48"
         class="lyric clip"
         data-start="129.77"
         data-duration="1.94"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Nobody move like this</span>
+        <span><span class="word">Nobody</span> <span class="word">move</span> <span class="word">like</span> <span class="word">this</span></span>
       </div>
       <div
-        id="lyric-27"
+        id="lyric-49"
         class="lyric clip"
         data-start="131.77"
         data-duration="1.02"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Nobody play</span>
+        <span><span class="word">Nobody</span> <span class="word">play</span></span>
       </div>
       <div
-        id="lyric-28"
+        id="lyric-50"
         class="lyric clip"
         data-start="132.79"
         data-duration="1.4"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>I'm on my wave, on my wave</span>
+        <span><span class="word">I'm</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave,</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span></span>
       </div>
       <div
-        id="lyric-29"
+        id="lyric-51"
         class="lyric clip"
         data-start="134.19"
         data-duration="1.06"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Baby that's Neya,</span>
+        <span><span class="word">Baby</span> <span class="word">that's</span> <span class="word">Neya,</span></span>
       </div>
       <div
-        id="lyric-30"
+        id="lyric-52"
         class="lyric clip"
         data-start="135.51"
         data-duration="1.26"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>That's just my way</span>
+        <span><span class="word">That's</span> <span class="word">just</span> <span class="word">my</span> <span class="word">way</span></span>
       </div>
       <div
-        id="lyric-31"
+        id="lyric-53"
         class="lyric clip"
         data-start="136.77"
         data-duration="1.46"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Body moving hips don't lie</span>
+        <span><span class="word">Body</span> <span class="word">moving</span> <span class="word">hips</span> <span class="word">don't</span> <span class="word">lie</span></span>
       </div>
       <div
-        id="lyric-32"
+        id="lyric-54"
         class="lyric clip"
         data-start="138.23"
         data-duration="0.64"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Watch me,</span>
+        <span><span class="word">Watch</span> <span class="word">me,</span></span>
       </div>
       <div
-        id="lyric-33"
+        id="lyric-55"
         class="lyric clip"
         data-start="138.91"
         data-duration="1.42"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Watch me, watch me fly</span>
+        <span><span class="word">Watch</span> <span class="word">me,</span> <span class="word">watch</span> <span class="word">me</span> <span class="word">fly</span></span>
       </div>
       <div
-        id="lyric-34"
+        id="lyric-56"
         class="lyric clip"
         data-start="140.33"
         data-duration="1.64"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>I'm on my wave,</span>
+        <span><span class="word">I'm</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave,</span></span>
       </div>
       <div
-        id="lyric-35"
+        id="lyric-57"
         class="lyric clip"
         data-start="141.97"
         data-duration="0.76"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>on my wave</span>
+        <span><span class="word">on</span> <span class="word">my</span> <span class="word">wave</span></span>
       </div>
       <div
-        id="lyric-36"
+        id="lyric-58"
         class="lyric clip"
         data-start="142.73"
         data-duration="2.24"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Nobody gonna take this away</span>
+        <span><span class="word">Nobody</span> <span class="word">gonna</span> <span class="word">take</span> <span class="word">this</span> <span class="word">away</span></span>
       </div>
       <div
-        id="lyric-37"
+        id="lyric-59"
         class="lyric clip"
         data-start="144.97"
         data-duration="1.28"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Hands up if you're on my wave</span>
+        <span><span class="word">Hands</span> <span class="word">up</span> <span class="word">if</span> <span class="word">you're</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span></span>
       </div>
       <div
-        id="lyric-38"
+        id="lyric-60"
         class="lyric clip"
         data-start="146.25"
         data-duration="1.7"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Show me how you move today</span>
+        <span><span class="word">Show</span> <span class="word">me</span> <span class="word">how</span> <span class="word">you</span> <span class="word">move</span> <span class="word">today</span></span>
       </div>
       <div
-        id="lyric-39"
+        id="lyric-61"
+        class="lyric clip"
+        data-start="148.69"
+        data-duration="2.07"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">On</span> <span class="word">my</span> <span class="word">wave,</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span></span>
+      </div>
+      <div
+        id="lyric-62"
+        class="lyric clip"
+        data-start="150.76"
+        data-duration="2.13"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Baby</span> <span class="word">come</span> <span class="word">and</span> <span class="word">ride</span> <span class="word">this</span> <span class="word">wave</span></span>
+      </div>
+      <div
+        id="lyric-63"
+        class="lyric clip"
+        data-start="153.73"
+        data-duration="1.12"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Mmm...</span></span>
+      </div>
+      <div
+        id="lyric-64"
         class="lyric clip"
         data-start="157.41"
         data-duration="1.86"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Watch me,</span>
+        <span><span class="word">Watch</span> <span class="word">me,</span></span>
       </div>
       <div
-        id="lyric-40"
+        id="lyric-65"
         class="lyric clip"
         data-start="159.63"
         data-duration="0.66"
         data-track-index="1"
         data-layout-allow-occlusion
       >
-        <span>Watch me...</span>
+        <span><span class="word">Watch</span> <span class="word">me...</span></span>
+      </div>
+      <div
+        id="lyric-66"
+        class="lyric clip"
+        data-start="167.44"
+        data-duration="1.81"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">That's</span> <span class="word">just</span> <span class="word">my</span> <span class="word">way</span></span>
       </div>
 
       <!--
@@ -519,26 +802,85 @@
     </div>
 
     <script>
-      // Generic fade in/out for every ".lyric" clip — reads timing straight
-      // from the DOM (data-start/data-duration), so this block never needs
-      // to change when clips.config.json changes. Fade length is clamped to
-      // half the segment's own duration so a very short lyric line can't
-      // produce a negative-length hold between fade-in and fade-out.
+      // Everything below lives on one paused GSAP timeline that the renderer
+      // scrubs frame-by-frame. Nothing here may use a real-time CSS
+      // @keyframes animation — those run on wall-clock time and would
+      // desync from render capture, which advances by composition time,
+      // not real time.
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
 
-      const MAX_FADE = 0.3;
+      const totalDuration = parseFloat(document.getElementById("root").dataset.duration);
+
+      // Ken Burns — a single slow zoom/pan across the full duration of each
+      // visual clip. One continuous drift (not a loop), per the brief.
+      document.querySelectorAll("#root > video.clip, #root > img.clip").forEach((el) => {
+        const start = parseFloat(el.dataset.start);
+        const duration = parseFloat(el.dataset.duration);
+        tl.fromTo(
+          el,
+          { scale: 1, x: 0, y: 0 },
+          { scale: 1.14, x: -18, y: -14, duration, ease: "none" },
+          start,
+        );
+      });
+
+      // Ambient glow pulse behind the lyrics, timed to a fixed reference
+      // tempo (~100 BPM) — there's no audio analysis, so this is a steady
+      // approximation rather than a true beat-synced pulse.
+      const glowEl = document.getElementById("bg-glow");
+      if (glowEl) {
+        const BEAT = 0.6;
+        tl.to(
+          glowEl,
+          {
+            opacity: 0.35,
+            duration: BEAT,
+            repeat: Math.max(0, Math.floor(totalDuration / BEAT) - 1),
+            yoyo: true,
+            ease: "sine.inOut",
+          },
+          0,
+        );
+      }
+
+      // Lyric lines: scale/rotate/fade in and out (fade length clamped to
+      // half the segment's own duration so a very short line can't produce a
+      // negative-length hold), plus a word-by-word karaoke highlight spread
+      // evenly across the hold time — there's no word-level timing in the
+      // transcript, so this approximates sync rather than tracking exact
+      // syllable timing.
+      const FADE = 0.35;
       document.querySelectorAll("#root > .lyric").forEach((el) => {
         const start = parseFloat(el.dataset.start);
         const duration = parseFloat(el.dataset.duration);
-        const fade = Math.min(MAX_FADE, duration / 2);
+        const fade = Math.min(FADE, duration / 2);
+
         tl.fromTo(
           el,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: fade, ease: "power2.out" },
+          { opacity: 0, scale: 0.82, rotation: -4, y: 26 },
+          { opacity: 1, scale: 1, rotation: 0, y: 0, duration: fade, ease: "back.out(1.7)" },
           start,
         );
-        tl.to(el, { opacity: 0, duration: fade, ease: "power2.in" }, start + duration - fade);
+        tl.to(
+          el,
+          { opacity: 0, scale: 1.08, rotation: 3, duration: fade, ease: "power2.in" },
+          start + duration - fade,
+        );
+
+        const words = el.querySelectorAll(".word");
+        if (words.length) {
+          const holdStart = start + fade;
+          const holdEnd = start + duration - fade;
+          const hold = Math.max(holdEnd - holdStart, 0.05);
+          const step = hold / words.length;
+          tl.fromTo(
+            words,
+            { color: "rgba(255,255,255,0.4)" },
+            { color: "#249fc0", duration: Math.min(0.25, step), stagger: step, ease: "none" },
+            holdStart,
+          );
+        }
       });
 
       window.__timelines["main"] = tl;
