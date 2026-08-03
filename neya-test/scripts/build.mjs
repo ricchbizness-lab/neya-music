@@ -182,18 +182,22 @@ const html = `<!doctype html>
         pointer-events: none;
       }
       .lyric span {
+        font-family: "Poppins", "Inter", sans-serif;
         font-weight: 800;
         font-size: 84px;
         line-height: 1.15;
-        color: #249fc0;
+        color: #ffffff;
+        -webkit-text-stroke: 2px #ffffff;
         text-shadow:
-          0 0 14px rgba(36, 159, 192, 0.85),
-          0 0 32px rgba(36, 159, 192, 0.55),
-          0 4px 10px rgba(0, 0, 0, 0.65);
+          0 0 14px rgba(36, 159, 192, 0.95),
+          0 0 30px rgba(36, 159, 192, 0.8),
+          0 0 55px rgba(36, 159, 192, 0.5);
         letter-spacing: 0.5px;
       }
       /* Karaoke words start dim; the runtime script tweens each one's color
-         to the full glow value as its share of the line's hold time arrives. */
+         to full white as its share of the line's hold time arrives. The
+         cyan glow itself lives on the constant text-shadow above (outside
+         the stroke), not on the animated fill color. */
       .lyric .word {
         color: rgba(255, 255, 255, 0.4);
       }
@@ -319,7 +323,7 @@ ${lyricBlocks}
           tl.fromTo(
             words,
             { color: "rgba(255,255,255,0.4)" },
-            { color: "#249fc0", duration: Math.min(0.25, step), stagger: step, ease: "none" },
+            { color: "#ffffff", duration: Math.min(0.25, step), stagger: step, ease: "none" },
             holdStart,
           );
         }
