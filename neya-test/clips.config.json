@@ -6,7 +6,7 @@
   "audio": "assets/on-my-wav-neya.mp3",
   "clips": [
     {
-      "src": "assets/PLACEHOLDER_neya-visual-loop.mp4",
+      "src": "assets/neya-visual-loop.mp4",
       "duration": 177.267
     }
   ],
