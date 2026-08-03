@@ -44,9 +44,24 @@ const clipsDuration = cursor;
 // duration.
 const totalDuration = config.duration ?? clipsDuration;
 
+// A clip is an <img> when `type: "image"` is set in config (e.g. a static
+// poster held for the whole song) — otherwise a <video>. Keeping a still
+// image out of the video pipeline avoids per-frame seek/decode entirely,
+// which is both unnecessary for a non-moving source and far more expensive
+// at render time.
 const videoBlocks = clipsWithTiming
-  .map(
-    ({ src, start, duration }, i) => `      <video
+  .map(({ src, start, duration, type }, i) => {
+    if (type === "image") {
+      return `      <img
+        id="clip-${i + 1}"
+        class="clip"
+        src="${src}"
+        data-start="${start}"
+        data-duration="${duration}"
+        data-track-index="0"
+      />`;
+    }
+    return `      <video
         id="clip-${i + 1}"
         class="clip"
         src="${src}"
@@ -55,8 +70,8 @@ const videoBlocks = clipsWithTiming
         data-track-index="0"
         muted
         playsinline
-      ></video>`,
-  )
+      ></video>`;
+  })
   .join("\n");
 
 // Lyric segments carry their own start/end (e.g. from a word-level
@@ -116,8 +131,9 @@ const html = `<!doctype html>
         overflow: hidden;
       }
 
-      /* Video clips fill the frame edge-to-edge, direct hard cuts (no transition) */
-      video.clip {
+      /* Visual clips fill the frame edge-to-edge, direct hard cuts (no transition) */
+      video.clip,
+      img.clip {
         position: absolute;
         inset: 0;
         width: ${width}px;

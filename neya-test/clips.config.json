@@ -6,7 +6,8 @@
   "audio": "assets/on-my-wav-neya.mp3",
   "clips": [
     {
-      "src": "assets/neya-visual-loop.mp4",
+      "src": "assets/hf_20260526_225013_a148f707-f95f-4231-9952-368d1e40e359.png",
+      "type": "image",
       "duration": 177.267
     }
   ],

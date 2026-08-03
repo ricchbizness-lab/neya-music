@@ -30,8 +30,9 @@
         overflow: hidden;
       }
 
-      /* Video clips fill the frame edge-to-edge, direct hard cuts (no transition) */
-      video.clip {
+      /* Visual clips fill the frame edge-to-edge, direct hard cuts (no transition) */
+      video.clip,
+      img.clip {
         position: absolute;
         inset: 0;
         width: 1080px;
@@ -88,16 +89,14 @@
       data-height="1920"
       data-duration="177.267"
     >
-      <video
+      <img
         id="clip-1"
         class="clip"
-        src="assets/neya-visual-loop.mp4"
+        src="assets/hf_20260526_225013_a148f707-f95f-4231-9952-368d1e40e359.png"
         data-start="0"
         data-duration="177.267"
         data-track-index="0"
-        muted
-        playsinline
-      ></video>
+      />
 
       <div
         id="lyric-1"
