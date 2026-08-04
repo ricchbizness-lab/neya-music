@@ -41,100 +41,6 @@
         z-index: 1;
       }
 
-      /* .visual-wrap = glitch jitter target, .visual-beat (nested) =
-         continuous beat-zoom-punch target, .visual-kb (nested again) = Ken
-         Burns target. Three separate elements so none of the three tweens
-         ever fight another for control of the same node's transform. */
-      .visual-wrap,
-      .visual-beat,
-      .visual-kb {
-        position: absolute;
-        inset: 0;
-      }
-
-      /* Chromatic-aberration ghosts for the glitch pulses: cheap color-tinted
-         duplicates blended additively, not a true per-channel split (SVG
-         feColorMatrix would isolate channels exactly, but that's meaningfully
-         more expensive to composite across a multi-thousand-frame render —
-         not worth it for a brief, low-opacity pulse). Hidden (opacity 0) by
-         default; the runtime script flashes them on at each glitch beat. */
-      img.glitch-ghost {
-        position: absolute;
-        inset: 0;
-        width: 1080px;
-        height: 1920px;
-        object-fit: cover;
-        z-index: 1;
-        opacity: 0;
-        mix-blend-mode: screen;
-        pointer-events: none;
-      }
-      img.glitch-ghost-r {
-        filter: sepia(1) saturate(8) hue-rotate(-58deg) brightness(1.1);
-      }
-      img.glitch-ghost-c {
-        filter: sepia(1) saturate(8) hue-rotate(148deg) brightness(1.1);
-      }
-
-      /* Screen-locked VHS scanlines (deliberately NOT inside .visual-wrap /
-         .visual-kb — a scanline overlay reads as a property of the screen,
-         not the scene, so it shouldn't jitter or zoom with the image).
-         Below the lyrics (z-index 10) so text stays crisp; hidden by default,
-         flashed on briefly at each glitch beat. */
-      .glitch-overlay {
-        position: absolute;
-        inset: 0;
-        z-index: 3;
-        opacity: 0;
-        pointer-events: none;
-        background: repeating-linear-gradient(
-          to bottom,
-          rgba(255, 255, 255, 0.4) 0px,
-          rgba(255, 255, 255, 0.4) 1px,
-          rgba(0, 0, 0, 0) 1px,
-          rgba(0, 0, 0, 0) 3px
-        );
-        mix-blend-mode: overlay;
-      }
-
-      /* Quick white flash, layered with the glitch pulses below for extra
-         punch at accent beats. Above the scanlines, still below lyrics. */
-      .glitch-flash {
-        position: absolute;
-        inset: 0;
-        z-index: 4;
-        opacity: 0;
-        pointer-events: none;
-        background: #ffffff;
-        mix-blend-mode: overlay;
-      }
-
-      /* Permanent, static, subtle — a vignette and a film-grain texture.
-         Both are CapCut/TikTok-edit staples and both are essentially free:
-         no animation, no per-frame GSAP cost, just a background painted the
-         same way every frame. */
-      .vignette-overlay {
-        position: absolute;
-        inset: 0;
-        z-index: 2;
-        pointer-events: none;
-        background: radial-gradient(
-          ellipse at 50% 45%,
-          rgba(0, 0, 0, 0) 45%,
-          rgba(0, 0, 0, 0.55) 100%
-        );
-      }
-      .grain-overlay {
-        position: absolute;
-        inset: 0;
-        z-index: 2;
-        pointer-events: none;
-        opacity: 0.05;
-        mix-blend-mode: overlay;
-        background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'200'%20height%3D'200'%3E%3Cfilter%20id%3D'n'%3E%3CfeTurbulence%20type%3D'fractalNoise'%20baseFrequency%3D'0.85'%20numOctaves%3D'2'%20seed%3D'7'%20stitchTiles%3D'stitch'%2F%3E%3CfeColorMatrix%20type%3D'saturate'%20values%3D'0'%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D'100%25'%20height%3D'100%25'%20filter%3D'url(%23n)'%2F%3E%3C%2Fsvg%3E");
-        background-size: 200px 200px;
-      }
-
       /* Ambient glow behind the lyrics — pulses on the paused GSAP timeline
          (never a real-time CSS animation) so it stays frame-accurate under
          render capture, which scrubs composition time rather than wall time. */
@@ -208,31 +114,79 @@
       data-height="1920"
       data-duration="177.267"
     >
-      <div id="clip-1-wrap" class="visual-wrap">
-        <div id="clip-1-beat" class="visual-beat">
-          <div id="clip-1-kb" class="visual-kb">
-            <img
-              id="clip-1"
-              class="clip"
-              src="assets/hf_20260526_225013_a148f707-f95f-4231-9952-368d1e40e359.png"
-              data-start="0"
-              data-duration="177.267"
-              data-track-index="0"
-            />
-            <img class="glitch-ghost glitch-ghost-r" src="assets/hf_20260526_225013_a148f707-f95f-4231-9952-368d1e40e359.png" aria-hidden="true" />
-            <img class="glitch-ghost glitch-ghost-c" src="assets/hf_20260526_225013_a148f707-f95f-4231-9952-368d1e40e359.png" aria-hidden="true" />
-          </div>
-        </div>
-      </div>
-      <div id="clip-1-glitch-overlay" class="glitch-overlay" aria-hidden="true"></div>
-      <div id="clip-1-glitch-flash" class="glitch-flash" aria-hidden="true"></div>
+      <img
+        id="clip-1"
+        class="clip"
+        src="assets/hf_20260526_225013_a148f707-f95f-4231-9952-368d1e40e359.png"
+        data-start="0"
+        data-duration="177.267"
+        data-track-index="0"
+      />
 
-      <div class="vignette-overlay" aria-hidden="true"></div>
-      <div class="grain-overlay" aria-hidden="true"></div>
       <div id="bg-glow" class="bg-glow"></div>
 
       <div
         id="lyric-1"
+        class="lyric clip"
+        data-start="0"
+        data-duration="0.8"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Mmm...</span> <span class="word">🎶</span></span>
+      </div>
+      <div
+        id="lyric-2"
+        class="lyric clip"
+        data-start="3.68"
+        data-duration="1.22"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Closer</span> <span class="word">😏</span></span>
+      </div>
+      <div
+        id="lyric-3"
+        class="lyric clip"
+        data-start="6.48"
+        data-duration="1.34"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Not</span> <span class="word">yet</span> <span class="word">⏳</span></span>
+      </div>
+      <div
+        id="lyric-4"
+        class="lyric clip"
+        data-start="10.871"
+        data-duration="4.12"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Mmm</span> <span class="word">mmm</span> <span class="word">mmm,</span> <span class="word">yeah,</span> <span class="word">not</span> <span class="word">yet</span> <span class="word">🎶</span></span>
+      </div>
+      <div
+        id="lyric-5"
+        class="lyric clip"
+        data-start="16.271"
+        data-duration="1.68"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Baby</span> <span class="word">I</span> <span class="word">don't</span> <span class="word">need</span> <span class="word">your</span> <span class="word">validation</span> <span class="word">💪</span></span>
+      </div>
+      <div
+        id="lyric-6"
+        class="lyric clip"
+        data-start="17.951"
+        data-duration="1.62"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Got</span> <span class="word">myself</span> <span class="word">into</span> <span class="word">my</span> <span class="word">own</span> <span class="word">foundation</span> <span class="word">🏗️</span></span>
+      </div>
+      <div
+        id="lyric-7"
         class="lyric clip"
         data-start="19.58"
         data-duration="2.3"
@@ -242,7 +196,7 @@
         <span><span class="word">Everybody</span> <span class="word">watching</span> <span class="word">from</span> <span class="word">the</span> <span class="word">sideline</span> <span class="word">👀</span></span>
       </div>
       <div
-        id="lyric-2"
+        id="lyric-8"
         class="lyric clip"
         data-start="21.88"
         data-duration="1.86"
@@ -252,7 +206,7 @@
         <span><span class="word">Wondering</span> <span class="word">how</span> <span class="word">I</span> <span class="word">keep</span> <span class="word">on</span> <span class="word">making</span> <span class="word">it</span> <span class="word">shine</span> <span class="word">✨</span></span>
       </div>
       <div
-        id="lyric-3"
+        id="lyric-9"
         class="lyric clip"
         data-start="23.74"
         data-duration="1.66"
@@ -262,7 +216,7 @@
         <span><span class="word">Every</span> <span class="word">step</span> <span class="word">I</span> <span class="word">take</span> <span class="word">is</span> <span class="word">intentional</span> <span class="word">👣</span></span>
       </div>
       <div
-        id="lyric-4"
+        id="lyric-10"
         class="lyric clip"
         data-start="25.92"
         data-duration="1.42"
@@ -272,7 +226,7 @@
         <span><span class="word">Every</span> <span class="word">look</span> <span class="word">I</span> <span class="word">give</span> <span class="word">is</span> <span class="word">memorable</span> <span class="word">😍</span></span>
       </div>
       <div
-        id="lyric-5"
+        id="lyric-11"
         class="lyric clip"
         data-start="27.34"
         data-duration="2.12"
@@ -282,7 +236,7 @@
         <span><span class="word">You</span> <span class="word">can</span> <span class="word">copy</span> <span class="word">but</span> <span class="word">you</span> <span class="word">can't</span> <span class="word">recreate</span> <span class="word">🚫</span></span>
       </div>
       <div
-        id="lyric-6"
+        id="lyric-12"
         class="lyric clip"
         data-start="29.46"
         data-duration="2.22"
@@ -292,7 +246,7 @@
         <span><span class="word">Baby</span> <span class="word">that's</span> <span class="word">my</span> <span class="word">superpower</span> <span class="word">state</span> <span class="word">🦸‍♀️</span></span>
       </div>
       <div
-        id="lyric-7"
+        id="lyric-13"
         class="lyric clip"
         data-start="31.68"
         data-duration="2.2"
@@ -302,7 +256,7 @@
         <span><span class="word">Don't</span> <span class="word">you</span> <span class="word">try</span> <span class="word">to</span> <span class="word">slow</span> <span class="word">me</span> <span class="word">down</span> <span class="word">🛑</span></span>
       </div>
       <div
-        id="lyric-8"
+        id="lyric-14"
         class="lyric clip"
         data-start="33.88"
         data-duration="1.92"
@@ -312,7 +266,7 @@
         <span><span class="word">I</span> <span class="word">don't</span> <span class="word">ever</span> <span class="word">look</span> <span class="word">around</span> <span class="word">🙅‍♀️</span></span>
       </div>
       <div
-        id="lyric-9"
+        id="lyric-15"
         class="lyric clip"
         data-start="35.8"
         data-duration="1.48"
@@ -322,7 +276,7 @@
         <span><span class="word">Eyes</span> <span class="word">on</span> <span class="word">the</span> <span class="word">prize,</span> <span class="word">no</span> <span class="word">distraction</span> <span class="word">🎯</span></span>
       </div>
       <div
-        id="lyric-10"
+        id="lyric-16"
         class="lyric clip"
         data-start="37.28"
         data-duration="2.12"
@@ -332,7 +286,7 @@
         <span><span class="word">Everything</span> <span class="word">I</span> <span class="word">want,</span> <span class="word">main</span> <span class="word">attraction</span> <span class="word">⭐</span></span>
       </div>
       <div
-        id="lyric-11"
+        id="lyric-17"
         class="lyric clip"
         data-start="39.4"
         data-duration="2.8"
@@ -342,7 +296,7 @@
         <span><span class="word">I'm</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave,</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-12"
+        id="lyric-18"
         class="lyric clip"
         data-start="42.2"
         data-duration="4"
@@ -352,7 +306,7 @@
         <span><span class="word">Nobody</span> <span class="word">move</span> <span class="word">like</span> <span class="word">this,</span> <span class="word">nobody</span> <span class="word">play</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-13"
+        id="lyric-19"
         class="lyric clip"
         data-start="46.2"
         data-duration="2.56"
@@ -362,7 +316,7 @@
         <span><span class="word">Baby</span> <span class="word">that's</span> <span class="word">Neya,</span> <span class="word">that's</span> <span class="word">just</span> <span class="word">my</span> <span class="word">way</span> <span class="word">👑</span></span>
       </div>
       <div
-        id="lyric-14"
+        id="lyric-20"
         class="lyric clip"
         data-start="48.76"
         data-duration="1.48"
@@ -372,7 +326,7 @@
         <span><span class="word">Body</span> <span class="word">moving</span> <span class="word">hips</span> <span class="word">don't</span> <span class="word">lie</span> <span class="word">💃</span></span>
       </div>
       <div
-        id="lyric-15"
+        id="lyric-21"
         class="lyric clip"
         data-start="50.24"
         data-duration="2.48"
@@ -382,7 +336,7 @@
         <span><span class="word">Watch</span> <span class="word">me,</span> <span class="word">watch</span> <span class="word">me,</span> <span class="word">watch</span> <span class="word">me</span> <span class="word">fly</span> <span class="word">👀</span></span>
       </div>
       <div
-        id="lyric-16"
+        id="lyric-22"
         class="lyric clip"
         data-start="52.72"
         data-duration="1.89"
@@ -392,7 +346,7 @@
         <span><span class="word">On</span> <span class="word">my</span> <span class="word">wave,</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-17"
+        id="lyric-23"
         class="lyric clip"
         data-start="54.61"
         data-duration="2.17"
@@ -402,7 +356,7 @@
         <span><span class="word">Nobody</span> <span class="word">gonna</span> <span class="word">take</span> <span class="word">this</span> <span class="word">away</span> <span class="word">🙅‍♀️</span></span>
       </div>
       <div
-        id="lyric-18"
+        id="lyric-24"
         class="lyric clip"
         data-start="62.43"
         data-duration="2.32"
@@ -412,7 +366,7 @@
         <span><span class="word">Nobody</span> <span class="word">gonna</span> <span class="word">take</span> <span class="word">this</span> <span class="word">away</span> <span class="word">🙅‍♀️</span></span>
       </div>
       <div
-        id="lyric-19"
+        id="lyric-25"
         class="lyric clip"
         data-start="71.51"
         data-duration="1.36"
@@ -422,7 +376,7 @@
         <span><span class="word">They</span> <span class="word">be</span> <span class="word">asking</span> <span class="word">how</span> <span class="word">I</span> <span class="word">always</span> <span class="word">stay</span> <span class="word">🤷‍♀️</span></span>
       </div>
       <div
-        id="lyric-20"
+        id="lyric-26"
         class="lyric clip"
         data-start="72.87"
         data-duration="1.21"
@@ -432,7 +386,7 @@
         <span><span class="word">Winning,</span> <span class="word">simple</span> <span class="word">answer</span> <span class="word">🏆</span></span>
       </div>
       <div
-        id="lyric-21"
+        id="lyric-27"
         class="lyric clip"
         data-start="74.08"
         data-duration="1.29"
@@ -442,7 +396,7 @@
         <span><span class="word">Been</span> <span class="word">on</span> <span class="word">it</span> <span class="word">from</span> <span class="word">the</span> <span class="word">beginning</span> <span class="word">⏳</span></span>
       </div>
       <div
-        id="lyric-22"
+        id="lyric-28"
         class="lyric clip"
         data-start="75.37"
         data-duration="2.22"
@@ -452,7 +406,7 @@
         <span><span class="word">No</span> <span class="word">shortcuts,</span> <span class="word">no</span> <span class="word">fake</span> <span class="word">connections</span> <span class="word">🚫</span></span>
       </div>
       <div
-        id="lyric-23"
+        id="lyric-29"
         class="lyric clip"
         data-start="77.59"
         data-duration="2"
@@ -462,7 +416,7 @@
         <span><span class="word">Just</span> <span class="word">me</span> <span class="word">building</span> <span class="word">all</span> <span class="word">my</span> <span class="word">own</span> <span class="word">directions</span> <span class="word">🧭</span></span>
       </div>
       <div
-        id="lyric-24"
+        id="lyric-30"
         class="lyric clip"
         data-start="80.26"
         data-duration="1.92"
@@ -472,7 +426,7 @@
         <span><span class="word">Every</span> <span class="word">level</span> <span class="word">up</span> <span class="word">was</span> <span class="word">earned</span> <span class="word">in</span> <span class="word">silence</span> <span class="word">📈</span></span>
       </div>
       <div
-        id="lyric-25"
+        id="lyric-31"
         class="lyric clip"
         data-start="82.28"
         data-duration="2.9"
@@ -482,7 +436,7 @@
         <span><span class="word">Every</span> <span class="word">crown</span> <span class="word">I</span> <span class="word">wear,</span> <span class="word">I</span> <span class="word">paid</span> <span class="word">in</span> <span class="word">patience,</span> <span class="word">baby</span> <span class="word">that's</span> <span class="word">the</span> <span class="word">difference</span> <span class="word">between</span> <span class="word">me</span> <span class="word">and</span> <span class="word">them</span> <span class="word">👑</span></span>
       </div>
       <div
-        id="lyric-26"
+        id="lyric-32"
         class="lyric clip"
         data-start="85.18"
         data-duration="0.96"
@@ -492,7 +446,7 @@
         <span><span class="word">I</span> <span class="word">don't</span> <span class="word">chase</span> <span class="word">🚫</span></span>
       </div>
       <div
-        id="lyric-27"
+        id="lyric-33"
         class="lyric clip"
         data-start="86.22"
         data-duration="1"
@@ -502,7 +456,7 @@
         <span><span class="word">I</span> <span class="word">create</span> <span class="word">the</span> <span class="word">trend</span> <span class="word">🔥</span></span>
       </div>
       <div
-        id="lyric-28"
+        id="lyric-34"
         class="lyric clip"
         data-start="87.22"
         data-duration="2.62"
@@ -512,7 +466,7 @@
         <span><span class="word">Don't</span> <span class="word">you</span> <span class="word">try</span> <span class="word">to</span> <span class="word">slow</span> <span class="word">me</span> <span class="word">down</span> <span class="word">🛑</span></span>
       </div>
       <div
-        id="lyric-29"
+        id="lyric-35"
         class="lyric clip"
         data-start="89.84"
         data-duration="1.84"
@@ -522,7 +476,7 @@
         <span><span class="word">I</span> <span class="word">don't</span> <span class="word">ever</span> <span class="word">look</span> <span class="word">around</span> <span class="word">🙅‍♀️</span></span>
       </div>
       <div
-        id="lyric-30"
+        id="lyric-36"
         class="lyric clip"
         data-start="91.68"
         data-duration="1.62"
@@ -532,7 +486,7 @@
         <span><span class="word">Eyes</span> <span class="word">on</span> <span class="word">the</span> <span class="word">prize,</span> <span class="word">no</span> <span class="word">distraction</span> <span class="word">🎯</span></span>
       </div>
       <div
-        id="lyric-31"
+        id="lyric-37"
         class="lyric clip"
         data-start="93.3"
         data-duration="1.96"
@@ -542,7 +496,7 @@
         <span><span class="word">Everything</span> <span class="word">I</span> <span class="word">want,</span> <span class="word">main</span> <span class="word">attraction</span> <span class="word">⭐</span></span>
       </div>
       <div
-        id="lyric-32"
+        id="lyric-38"
         class="lyric clip"
         data-start="95.26"
         data-duration="1.56"
@@ -552,7 +506,7 @@
         <span><span class="word">I'm</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-33"
+        id="lyric-39"
         class="lyric clip"
         data-start="96.9"
         data-duration="0.9"
@@ -562,7 +516,7 @@
         <span><span class="word">On</span> <span class="word">my</span> <span class="word">wave</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-34"
+        id="lyric-40"
         class="lyric clip"
         data-start="97.8"
         data-duration="1.88"
@@ -572,7 +526,7 @@
         <span><span class="word">Nobody</span> <span class="word">move</span> <span class="word">like</span> <span class="word">this</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-35"
+        id="lyric-41"
         class="lyric clip"
         data-start="99.76"
         data-duration="0.96"
@@ -582,7 +536,7 @@
         <span><span class="word">Nobody</span> <span class="word">play</span> <span class="word">🙅‍♀️</span></span>
       </div>
       <div
-        id="lyric-36"
+        id="lyric-42"
         class="lyric clip"
         data-start="100.72"
         data-duration="1.08"
@@ -592,7 +546,7 @@
         <span><span class="word">I'm</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-37"
+        id="lyric-43"
         class="lyric clip"
         data-start="101.8"
         data-duration="0.61"
@@ -602,7 +556,7 @@
         <span><span class="word">On</span> <span class="word">my</span> <span class="word">wave</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-38"
+        id="lyric-44"
         class="lyric clip"
         data-start="102.41"
         data-duration="2.35"
@@ -612,7 +566,7 @@
         <span><span class="word">Baby</span> <span class="word">that's</span> <span class="word">Neya,</span> <span class="word">that's</span> <span class="word">just</span> <span class="word">my</span> <span class="word">way</span> <span class="word">👑</span></span>
       </div>
       <div
-        id="lyric-39"
+        id="lyric-45"
         class="lyric clip"
         data-start="104.76"
         data-duration="1.5"
@@ -622,7 +576,7 @@
         <span><span class="word">Body</span> <span class="word">moving</span> <span class="word">hips</span> <span class="word">don't</span> <span class="word">lie</span> <span class="word">💃</span></span>
       </div>
       <div
-        id="lyric-40"
+        id="lyric-46"
         class="lyric clip"
         data-start="106.26"
         data-duration="2.43"
@@ -632,7 +586,7 @@
         <span><span class="word">Watch</span> <span class="word">me,</span> <span class="word">watch</span> <span class="word">me</span> <span class="word">fly</span> <span class="word">👀</span></span>
       </div>
       <div
-        id="lyric-41"
+        id="lyric-47"
         class="lyric clip"
         data-start="108.69"
         data-duration="1.94"
@@ -642,7 +596,7 @@
         <span><span class="word">On</span> <span class="word">my</span> <span class="word">wave,</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-42"
+        id="lyric-48"
         class="lyric clip"
         data-start="110.63"
         data-duration="2.18"
@@ -652,7 +606,7 @@
         <span><span class="word">Nobody</span> <span class="word">gonna</span> <span class="word">take</span> <span class="word">this</span> <span class="word">away</span> <span class="word">🙅‍♀️</span></span>
       </div>
       <div
-        id="lyric-43"
+        id="lyric-49"
         class="lyric clip"
         data-start="113.37"
         data-duration="3.33"
@@ -662,7 +616,7 @@
         <span><span class="word">Mmm...</span> <span class="word">🎶</span></span>
       </div>
       <div
-        id="lyric-44"
+        id="lyric-50"
         class="lyric clip"
         data-start="116.7"
         data-duration="3.35"
@@ -672,7 +626,7 @@
         <span><span class="word">Watch</span> <span class="word">this</span> <span class="word">👀</span></span>
       </div>
       <div
-        id="lyric-45"
+        id="lyric-51"
         class="lyric clip"
         data-start="123.6"
         data-duration="1.14"
@@ -682,7 +636,7 @@
         <span><span class="word">Mmm...</span> <span class="word">🎶</span></span>
       </div>
       <div
-        id="lyric-46"
+        id="lyric-52"
         class="lyric clip"
         data-start="127.45"
         data-duration="1.44"
@@ -692,7 +646,7 @@
         <span><span class="word">I'm</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-47"
+        id="lyric-53"
         class="lyric clip"
         data-start="128.89"
         data-duration="0.88"
@@ -702,7 +656,7 @@
         <span><span class="word">On</span> <span class="word">my</span> <span class="word">wave</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-48"
+        id="lyric-54"
         class="lyric clip"
         data-start="129.77"
         data-duration="1.94"
@@ -712,7 +666,7 @@
         <span><span class="word">Nobody</span> <span class="word">move</span> <span class="word">like</span> <span class="word">this</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-49"
+        id="lyric-55"
         class="lyric clip"
         data-start="131.77"
         data-duration="1.02"
@@ -722,7 +676,7 @@
         <span><span class="word">Nobody</span> <span class="word">play</span> <span class="word">🙅‍♀️</span></span>
       </div>
       <div
-        id="lyric-50"
+        id="lyric-56"
         class="lyric clip"
         data-start="132.79"
         data-duration="1.4"
@@ -732,7 +686,7 @@
         <span><span class="word">I'm</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave,</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-51"
+        id="lyric-57"
         class="lyric clip"
         data-start="134.19"
         data-duration="1.06"
@@ -742,7 +696,7 @@
         <span><span class="word">Baby</span> <span class="word">that's</span> <span class="word">Neya,</span> <span class="word">👑</span></span>
       </div>
       <div
-        id="lyric-52"
+        id="lyric-58"
         class="lyric clip"
         data-start="135.51"
         data-duration="1.26"
@@ -752,7 +706,7 @@
         <span><span class="word">That's</span> <span class="word">just</span> <span class="word">my</span> <span class="word">way</span> <span class="word">👑</span></span>
       </div>
       <div
-        id="lyric-53"
+        id="lyric-59"
         class="lyric clip"
         data-start="136.77"
         data-duration="1.46"
@@ -762,7 +716,7 @@
         <span><span class="word">Body</span> <span class="word">moving</span> <span class="word">hips</span> <span class="word">don't</span> <span class="word">lie</span> <span class="word">💃</span></span>
       </div>
       <div
-        id="lyric-54"
+        id="lyric-60"
         class="lyric clip"
         data-start="138.23"
         data-duration="0.64"
@@ -772,7 +726,7 @@
         <span><span class="word">Watch</span> <span class="word">me,</span> <span class="word">👀</span></span>
       </div>
       <div
-        id="lyric-55"
+        id="lyric-61"
         class="lyric clip"
         data-start="138.91"
         data-duration="1.42"
@@ -782,7 +736,7 @@
         <span><span class="word">Watch</span> <span class="word">me,</span> <span class="word">watch</span> <span class="word">me</span> <span class="word">fly</span> <span class="word">👀</span></span>
       </div>
       <div
-        id="lyric-56"
+        id="lyric-62"
         class="lyric clip"
         data-start="140.33"
         data-duration="1.64"
@@ -792,7 +746,7 @@
         <span><span class="word">I'm</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave,</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-57"
+        id="lyric-63"
         class="lyric clip"
         data-start="141.97"
         data-duration="0.76"
@@ -802,7 +756,7 @@
         <span><span class="word">on</span> <span class="word">my</span> <span class="word">wave</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-58"
+        id="lyric-64"
         class="lyric clip"
         data-start="142.73"
         data-duration="2.24"
@@ -812,7 +766,7 @@
         <span><span class="word">Nobody</span> <span class="word">gonna</span> <span class="word">take</span> <span class="word">this</span> <span class="word">away</span> <span class="word">🙅‍♀️</span></span>
       </div>
       <div
-        id="lyric-59"
+        id="lyric-65"
         class="lyric clip"
         data-start="144.97"
         data-duration="1.28"
@@ -822,7 +776,7 @@
         <span><span class="word">Hands</span> <span class="word">up</span> <span class="word">if</span> <span class="word">you're</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span> <span class="word">🙌</span></span>
       </div>
       <div
-        id="lyric-60"
+        id="lyric-66"
         class="lyric clip"
         data-start="146.25"
         data-duration="1.7"
@@ -832,7 +786,7 @@
         <span><span class="word">Show</span> <span class="word">me</span> <span class="word">how</span> <span class="word">you</span> <span class="word">move</span> <span class="word">today</span> <span class="word">💃</span></span>
       </div>
       <div
-        id="lyric-61"
+        id="lyric-67"
         class="lyric clip"
         data-start="148.69"
         data-duration="2.07"
@@ -842,7 +796,7 @@
         <span><span class="word">On</span> <span class="word">my</span> <span class="word">wave,</span> <span class="word">on</span> <span class="word">my</span> <span class="word">wave</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-62"
+        id="lyric-68"
         class="lyric clip"
         data-start="150.76"
         data-duration="2.13"
@@ -852,7 +806,7 @@
         <span><span class="word">Baby</span> <span class="word">come</span> <span class="word">and</span> <span class="word">ride</span> <span class="word">this</span> <span class="word">wave</span> <span class="word">🌊</span></span>
       </div>
       <div
-        id="lyric-63"
+        id="lyric-69"
         class="lyric clip"
         data-start="153.73"
         data-duration="1.12"
@@ -862,7 +816,7 @@
         <span><span class="word">Mmm...</span> <span class="word">🎶</span></span>
       </div>
       <div
-        id="lyric-64"
+        id="lyric-70"
         class="lyric clip"
         data-start="157.41"
         data-duration="1.86"
@@ -872,7 +826,7 @@
         <span><span class="word">Watch</span> <span class="word">me,</span> <span class="word">👀</span></span>
       </div>
       <div
-        id="lyric-65"
+        id="lyric-71"
         class="lyric clip"
         data-start="159.63"
         data-duration="0.66"
@@ -882,7 +836,7 @@
         <span><span class="word">Watch</span> <span class="word">me...</span> <span class="word">👀</span></span>
       </div>
       <div
-        id="lyric-66"
+        id="lyric-72"
         class="lyric clip"
         data-start="167.44"
         data-duration="1.81"
@@ -922,126 +876,12 @@
 
       const totalDuration = parseFloat(document.getElementById("root").dataset.duration);
 
-      // Ken Burns — a single slow zoom/pan across the full duration of each
-      // visual clip. One continuous drift (not a loop), per the brief.
-      // Plain video clips are tweened directly; image clips wrap their real
-      // content in .visual-kb (a purely structural, untimed element) so the
-      // Ken Burns tween and the glitch jitter tween (below, on the parent
-      // .visual-wrap) each get their own transform to own instead of
-      // fighting over the same node's x/y.
-      document.querySelectorAll("#root > video.clip").forEach((el) => {
-        const start = parseFloat(el.dataset.start);
-        const duration = parseFloat(el.dataset.duration);
-        tl.fromTo(
-          el,
-          { scale: 1, x: 0, y: 0 },
-          { scale: 1.14, x: -18, y: -14, duration, ease: "none" },
-          start,
-        );
-      });
-      document.querySelectorAll("#root .visual-wrap img.clip").forEach((imgEl) => {
-        const kbTarget = imgEl.closest(".visual-kb");
-        if (!kbTarget) return;
-        const start = parseFloat(imgEl.dataset.start);
-        const duration = parseFloat(imgEl.dataset.duration);
-        tl.fromTo(
-          kbTarget,
-          { scale: 1, x: 0, y: 0 },
-          { scale: 1.14, x: -18, y: -14, duration, ease: "none" },
-          start,
-        );
-      });
-
-      // Beat-synced "zoom punch" — the classic CapCut/TikTok edit rhythm
-      // accent: a small continuous scale bounce on a fixed reference tempo,
-      // running the whole song so the video never sits perfectly still even
-      // between glitch/lyric beats. Same BEAT constant as the glow pulse
-      // below, so the two read as one consistent rhythm rather than two
-      // unrelated timers.
-      const BEAT = 0.6;
-      document.querySelectorAll("#root > .visual-wrap > .visual-beat").forEach((beatEl) => {
-        tl.to(
-          beatEl,
-          {
-            scale: 1.018,
-            duration: BEAT,
-            repeat: Math.max(0, Math.floor(totalDuration / BEAT) - 1),
-            yoyo: true,
-            ease: "sine.inOut",
-          },
-          0,
-        );
-      });
-
-      // Cyberpunk "glitch" pulses on the background visual: a chromatic-
-      // aberration ghost flicker, a scanline flash, and a tiny position
-      // jitter — fired at hand-picked structural moments in the song
-      // (chorus entries, the break, the outro line) rather than a fixed
-      // interval, so each hit lands on a real accent instead of ticking
-      // mechanically. Jitter offsets are hand-authored fixed values, not
-      // Math.random(), to keep render output deterministic.
-      const GLITCH_BEATS = [39.4, 95.26, 113.37, 127.45, 167.44];
-      document.querySelectorAll("#root > .visual-wrap").forEach((wrapEl) => {
-        const imgEl = wrapEl.querySelector("img.clip");
-        const ghostR = wrapEl.querySelector(".glitch-ghost-r");
-        const ghostC = wrapEl.querySelector(".glitch-ghost-c");
-        const overlayEl = wrapEl.nextElementSibling;
-        const flashEl = overlayEl?.nextElementSibling;
-        if (
-          !imgEl ||
-          !ghostR ||
-          !ghostC ||
-          !overlayEl?.classList.contains("glitch-overlay") ||
-          !flashEl?.classList.contains("glitch-flash")
-        ) {
-          return;
-        }
-
-        const start = parseFloat(imgEl.dataset.start);
-        const duration = parseFloat(imgEl.dataset.duration);
-        const JITTER = [
-          [3, -2],
-          [-4, 1],
-          [2, 2],
-          [-2, -3],
-          [1, 0],
-        ];
-
-        for (const t of GLITCH_BEATS) {
-          if (t < start || t > start + duration - 0.5) continue;
-          tl.set([ghostR, ghostC], { opacity: 0, x: 0 }, t);
-          tl.to(ghostR, { opacity: 0.75, x: -6, duration: 0.06 }, t);
-          tl.to(ghostC, { opacity: 0.75, x: 6, duration: 0.06 }, t);
-          tl.to([ghostR, ghostC], { opacity: 0, x: 0, duration: 0.12 }, t + 0.22);
-
-          tl.fromTo(
-            overlayEl,
-            { opacity: 0 },
-            { opacity: 0.5, duration: 0.05, yoyo: true, repeat: 3 },
-            t,
-          );
-          tl.fromTo(
-            flashEl,
-            { opacity: 0 },
-            { opacity: 0.6, duration: 0.045, yoyo: true, repeat: 1, ease: "power1.out" },
-            t,
-          );
-
-          let cursor = t;
-          JITTER.forEach(([dx, dy]) => {
-            tl.to(wrapEl, { x: dx, y: dy, duration: 0.035, ease: "none" }, cursor);
-            cursor += 0.035;
-          });
-          tl.to(wrapEl, { x: 0, y: 0, duration: 0.04, ease: "none" }, cursor);
-        }
-      });
-
-      // Ambient glow pulse behind the lyrics, on the same fixed reference
-      // tempo (~100 BPM, BEAT above) as the zoom punch — there's no audio
-      // analysis, so this is a steady approximation rather than a true
-      // beat-synced pulse.
+      // Ambient glow pulse behind the lyrics, timed to a fixed reference
+      // tempo (~100 BPM) — there's no audio analysis, so this is a steady
+      // approximation rather than a true beat-synced pulse.
       const glowEl = document.getElementById("bg-glow");
       if (glowEl) {
+        const BEAT = 0.6;
         tl.to(
           glowEl,
           {

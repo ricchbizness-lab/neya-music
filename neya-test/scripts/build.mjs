@@ -49,35 +49,17 @@ const totalDuration = config.duration ?? clipsDuration;
 // image out of the video pipeline avoids per-frame seek/decode entirely,
 // which is both unnecessary for a non-moving source and far more expensive
 // at render time.
-//
-// Image clips get an extra nested wrapper stack + two ghost <img> copies so
-// the runtime script can layer several TikTok/CapCut-style accents without
-// any of them fighting each other for control of the same transform — each
-// effect gets its own element to animate:
-//   .visual-wrap  (outermost) — glitch jitter target
-//   .visual-beat  (nested)    — continuous beat-synced zoom-punch target
-//   .visual-kb    (nested)    — Ken Burns zoom/pan target
 const videoBlocks = clipsWithTiming
   .map(({ src, start, duration, type }, i) => {
     if (type === "image") {
-      return `      <div id="clip-${i + 1}-wrap" class="visual-wrap">
-        <div id="clip-${i + 1}-beat" class="visual-beat">
-          <div id="clip-${i + 1}-kb" class="visual-kb">
-            <img
-              id="clip-${i + 1}"
-              class="clip"
-              src="${src}"
-              data-start="${start}"
-              data-duration="${duration}"
-              data-track-index="0"
-            />
-            <img class="glitch-ghost glitch-ghost-r" src="${src}" aria-hidden="true" />
-            <img class="glitch-ghost glitch-ghost-c" src="${src}" aria-hidden="true" />
-          </div>
-        </div>
-      </div>
-      <div id="clip-${i + 1}-glitch-overlay" class="glitch-overlay" aria-hidden="true"></div>
-      <div id="clip-${i + 1}-glitch-flash" class="glitch-flash" aria-hidden="true"></div>`;
+      return `      <img
+        id="clip-${i + 1}"
+        class="clip"
+        src="${src}"
+        data-start="${start}"
+        data-duration="${duration}"
+        data-track-index="0"
+      />`;
     }
     return `      <video
         id="clip-${i + 1}"
@@ -124,18 +106,6 @@ function escapeHtml(str) {
     .replace(/>/g, "&gt;");
 }
 
-// Static film-grain texture (deterministic SVG feTurbulence, fixed seed —
-// not Math.random) encoded as a data URI so it's a plain tiled background
-// image at render time: zero animation cost, painted once like any other
-// background. encodeURIComponent handles all the escaping (#, quotes, etc.)
-// so nothing here needs hand-escaping.
-const grainSvg =
-  `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>` +
-  `<filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7' stitchTiles='stitch'/>` +
-  `<feColorMatrix type='saturate' values='0'/></filter>` +
-  `<rect width='100%' height='100%' filter='url(#n)'/></svg>`;
-const grainDataUri = `data:image/svg+xml,${encodeURIComponent(grainSvg)}`;
-
 const html = `<!doctype html>
 <html lang="en">
   <head>
@@ -177,100 +147,6 @@ const html = `<!doctype html>
         height: ${height}px;
         object-fit: cover;
         z-index: 1;
-      }
-
-      /* .visual-wrap = glitch jitter target, .visual-beat (nested) =
-         continuous beat-zoom-punch target, .visual-kb (nested again) = Ken
-         Burns target. Three separate elements so none of the three tweens
-         ever fight another for control of the same node's transform. */
-      .visual-wrap,
-      .visual-beat,
-      .visual-kb {
-        position: absolute;
-        inset: 0;
-      }
-
-      /* Chromatic-aberration ghosts for the glitch pulses: cheap color-tinted
-         duplicates blended additively, not a true per-channel split (SVG
-         feColorMatrix would isolate channels exactly, but that's meaningfully
-         more expensive to composite across a multi-thousand-frame render —
-         not worth it for a brief, low-opacity pulse). Hidden (opacity 0) by
-         default; the runtime script flashes them on at each glitch beat. */
-      img.glitch-ghost {
-        position: absolute;
-        inset: 0;
-        width: ${width}px;
-        height: ${height}px;
-        object-fit: cover;
-        z-index: 1;
-        opacity: 0;
-        mix-blend-mode: screen;
-        pointer-events: none;
-      }
-      img.glitch-ghost-r {
-        filter: sepia(1) saturate(8) hue-rotate(-58deg) brightness(1.1);
-      }
-      img.glitch-ghost-c {
-        filter: sepia(1) saturate(8) hue-rotate(148deg) brightness(1.1);
-      }
-
-      /* Screen-locked VHS scanlines (deliberately NOT inside .visual-wrap /
-         .visual-kb — a scanline overlay reads as a property of the screen,
-         not the scene, so it shouldn't jitter or zoom with the image).
-         Below the lyrics (z-index 10) so text stays crisp; hidden by default,
-         flashed on briefly at each glitch beat. */
-      .glitch-overlay {
-        position: absolute;
-        inset: 0;
-        z-index: 3;
-        opacity: 0;
-        pointer-events: none;
-        background: repeating-linear-gradient(
-          to bottom,
-          rgba(255, 255, 255, 0.4) 0px,
-          rgba(255, 255, 255, 0.4) 1px,
-          rgba(0, 0, 0, 0) 1px,
-          rgba(0, 0, 0, 0) 3px
-        );
-        mix-blend-mode: overlay;
-      }
-
-      /* Quick white flash, layered with the glitch pulses below for extra
-         punch at accent beats. Above the scanlines, still below lyrics. */
-      .glitch-flash {
-        position: absolute;
-        inset: 0;
-        z-index: 4;
-        opacity: 0;
-        pointer-events: none;
-        background: #ffffff;
-        mix-blend-mode: overlay;
-      }
-
-      /* Permanent, static, subtle — a vignette and a film-grain texture.
-         Both are CapCut/TikTok-edit staples and both are essentially free:
-         no animation, no per-frame GSAP cost, just a background painted the
-         same way every frame. */
-      .vignette-overlay {
-        position: absolute;
-        inset: 0;
-        z-index: 2;
-        pointer-events: none;
-        background: radial-gradient(
-          ellipse at 50% 45%,
-          rgba(0, 0, 0, 0) 45%,
-          rgba(0, 0, 0, 0.55) 100%
-        );
-      }
-      .grain-overlay {
-        position: absolute;
-        inset: 0;
-        z-index: 2;
-        pointer-events: none;
-        opacity: 0.05;
-        mix-blend-mode: overlay;
-        background-image: url("${grainDataUri}");
-        background-size: 200px 200px;
       }
 
       /* Ambient glow behind the lyrics — pulses on the paused GSAP timeline
@@ -348,8 +224,6 @@ const html = `<!doctype html>
     >
 ${videoBlocks}
 
-      <div class="vignette-overlay" aria-hidden="true"></div>
-      <div class="grain-overlay" aria-hidden="true"></div>
       <div id="bg-glow" class="bg-glow"></div>
 
 ${lyricBlocks}
@@ -384,126 +258,12 @@ ${lyricBlocks}
 
       const totalDuration = parseFloat(document.getElementById("root").dataset.duration);
 
-      // Ken Burns — a single slow zoom/pan across the full duration of each
-      // visual clip. One continuous drift (not a loop), per the brief.
-      // Plain video clips are tweened directly; image clips wrap their real
-      // content in .visual-kb (a purely structural, untimed element) so the
-      // Ken Burns tween and the glitch jitter tween (below, on the parent
-      // .visual-wrap) each get their own transform to own instead of
-      // fighting over the same node's x/y.
-      document.querySelectorAll("#root > video.clip").forEach((el) => {
-        const start = parseFloat(el.dataset.start);
-        const duration = parseFloat(el.dataset.duration);
-        tl.fromTo(
-          el,
-          { scale: 1, x: 0, y: 0 },
-          { scale: 1.14, x: -18, y: -14, duration, ease: "none" },
-          start,
-        );
-      });
-      document.querySelectorAll("#root .visual-wrap img.clip").forEach((imgEl) => {
-        const kbTarget = imgEl.closest(".visual-kb");
-        if (!kbTarget) return;
-        const start = parseFloat(imgEl.dataset.start);
-        const duration = parseFloat(imgEl.dataset.duration);
-        tl.fromTo(
-          kbTarget,
-          { scale: 1, x: 0, y: 0 },
-          { scale: 1.14, x: -18, y: -14, duration, ease: "none" },
-          start,
-        );
-      });
-
-      // Beat-synced "zoom punch" — the classic CapCut/TikTok edit rhythm
-      // accent: a small continuous scale bounce on a fixed reference tempo,
-      // running the whole song so the video never sits perfectly still even
-      // between glitch/lyric beats. Same BEAT constant as the glow pulse
-      // below, so the two read as one consistent rhythm rather than two
-      // unrelated timers.
-      const BEAT = 0.6;
-      document.querySelectorAll("#root > .visual-wrap > .visual-beat").forEach((beatEl) => {
-        tl.to(
-          beatEl,
-          {
-            scale: 1.018,
-            duration: BEAT,
-            repeat: Math.max(0, Math.floor(totalDuration / BEAT) - 1),
-            yoyo: true,
-            ease: "sine.inOut",
-          },
-          0,
-        );
-      });
-
-      // Cyberpunk "glitch" pulses on the background visual: a chromatic-
-      // aberration ghost flicker, a scanline flash, and a tiny position
-      // jitter — fired at hand-picked structural moments in the song
-      // (chorus entries, the break, the outro line) rather than a fixed
-      // interval, so each hit lands on a real accent instead of ticking
-      // mechanically. Jitter offsets are hand-authored fixed values, not
-      // Math.random(), to keep render output deterministic.
-      const GLITCH_BEATS = [39.4, 95.26, 113.37, 127.45, 167.44];
-      document.querySelectorAll("#root > .visual-wrap").forEach((wrapEl) => {
-        const imgEl = wrapEl.querySelector("img.clip");
-        const ghostR = wrapEl.querySelector(".glitch-ghost-r");
-        const ghostC = wrapEl.querySelector(".glitch-ghost-c");
-        const overlayEl = wrapEl.nextElementSibling;
-        const flashEl = overlayEl?.nextElementSibling;
-        if (
-          !imgEl ||
-          !ghostR ||
-          !ghostC ||
-          !overlayEl?.classList.contains("glitch-overlay") ||
-          !flashEl?.classList.contains("glitch-flash")
-        ) {
-          return;
-        }
-
-        const start = parseFloat(imgEl.dataset.start);
-        const duration = parseFloat(imgEl.dataset.duration);
-        const JITTER = [
-          [3, -2],
-          [-4, 1],
-          [2, 2],
-          [-2, -3],
-          [1, 0],
-        ];
-
-        for (const t of GLITCH_BEATS) {
-          if (t < start || t > start + duration - 0.5) continue;
-          tl.set([ghostR, ghostC], { opacity: 0, x: 0 }, t);
-          tl.to(ghostR, { opacity: 0.75, x: -6, duration: 0.06 }, t);
-          tl.to(ghostC, { opacity: 0.75, x: 6, duration: 0.06 }, t);
-          tl.to([ghostR, ghostC], { opacity: 0, x: 0, duration: 0.12 }, t + 0.22);
-
-          tl.fromTo(
-            overlayEl,
-            { opacity: 0 },
-            { opacity: 0.5, duration: 0.05, yoyo: true, repeat: 3 },
-            t,
-          );
-          tl.fromTo(
-            flashEl,
-            { opacity: 0 },
-            { opacity: 0.6, duration: 0.045, yoyo: true, repeat: 1, ease: "power1.out" },
-            t,
-          );
-
-          let cursor = t;
-          JITTER.forEach(([dx, dy]) => {
-            tl.to(wrapEl, { x: dx, y: dy, duration: 0.035, ease: "none" }, cursor);
-            cursor += 0.035;
-          });
-          tl.to(wrapEl, { x: 0, y: 0, duration: 0.04, ease: "none" }, cursor);
-        }
-      });
-
-      // Ambient glow pulse behind the lyrics, on the same fixed reference
-      // tempo (~100 BPM, BEAT above) as the zoom punch — there's no audio
-      // analysis, so this is a steady approximation rather than a true
-      // beat-synced pulse.
+      // Ambient glow pulse behind the lyrics, timed to a fixed reference
+      // tempo (~100 BPM) — there's no audio analysis, so this is a steady
+      // approximation rather than a true beat-synced pulse.
       const glowEl = document.getElementById("bg-glow");
       if (glowEl) {
+        const BEAT = 0.6;
         tl.to(
           glowEl,
           {
