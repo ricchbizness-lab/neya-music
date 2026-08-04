@@ -5,16 +5,6 @@
     <style>
       @font-face {
         font-family: "Poppins";
-        font-weight: 600;
-        src: url("fonts/poppins-600.woff2") format("woff2");
-      }
-      @font-face {
-        font-family: "Poppins";
-        font-weight: 700;
-        src: url("fonts/poppins-700.woff2") format("woff2");
-      }
-      @font-face {
-        font-family: "Poppins";
         font-weight: 800;
         src: url("fonts/poppins-800.woff2") format("woff2");
       }
@@ -29,105 +19,75 @@
         height: 720px;
         overflow: hidden;
         background: #0a0510;
-        font-family: "Poppins", "Inter", sans-serif;
       }
       #stage {
         position: relative;
         width: 1280px;
         height: 720px;
-        display: flex;
       }
 
-      /* Left: cropped portrait, framed on the face/hair/sunburst */
-      #photo {
-        position: relative;
-        width: 720px;
-        height: 720px;
-        flex-shrink: 0;
+      /* Blurred, zoomed backdrop fills the pillarbox sides — the same
+         treatment YouTube uses when a vertical video plays in a wide
+         player. Sized larger than the canvas so the blur never samples a
+         transparent edge. */
+      #bg-blur {
+        position: absolute;
+        inset: -80px;
         background-image: url("../assets/hf_20260526_225013_a148f707-f95f-4231-9952-368d1e40e359.png");
         background-size: cover;
-        background-position: 50% 14%;
+        background-position: 50% 30%;
+        filter: blur(45px) brightness(0.55) saturate(1.3);
+        transform: scale(1.15);
       }
-      /* Soften the hard seam into the right panel */
-      #photo::after {
-        content: "";
+
+      /* The full, uncropped photo — letterboxed in the center, exact
+         source aspect ratio (1152x2048) at full canvas height. */
+      #photo-frame {
         position: absolute;
         inset: 0;
-        background: linear-gradient(
-          90deg,
-          rgba(10, 5, 16, 0) 78%,
-          rgba(10, 5, 16, 0.55) 94%,
-          #0a0510 100%
-        );
-      }
-
-      /* Right: brand panel with title */
-      #panel {
-        position: relative;
-        width: 560px;
-        height: 720px;
-        flex-shrink: 0;
-        background:
-          radial-gradient(circle at 50% 38%, rgba(36, 159, 192, 0.35) 0%, rgba(36, 159, 192, 0) 55%),
-          linear-gradient(165deg, #2b1246 0%, #170a29 55%, #0a0510 100%);
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 0 56px;
       }
-
-      #artist {
-        font-weight: 700;
-        font-size: 34px;
-        letter-spacing: 10px;
-        background: linear-gradient(90deg, #ffd25c 0%, #ff7a59 60%, #ff5b7f 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 22px;
+      #photo-frame img {
+        height: 720px;
+        width: auto;
+        display: block;
+        box-shadow: 0 0 90px rgba(0, 0, 0, 0.6);
       }
 
       #title {
-        font-weight: 800;
-        font-size: 92px;
-        line-height: 1.02;
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         text-align: center;
+        padding: 0 40px;
+        pointer-events: none;
+      }
+      #title span {
+        font-family: "Poppins", "Inter", sans-serif;
+        font-weight: 800;
+        font-size: 74px;
+        line-height: 1.1;
         color: #ffffff;
-        -webkit-text-stroke: 3px #ffffff;
+        -webkit-text-stroke: 2.5px #ffffff;
         text-shadow:
-          0 0 16px rgba(36, 159, 192, 0.95),
-          0 0 36px rgba(36, 159, 192, 0.8),
-          0 0 70px rgba(36, 159, 192, 0.55);
+          0 0 14px rgba(36, 159, 192, 0.95),
+          0 0 32px rgba(36, 159, 192, 0.8),
+          0 0 60px rgba(36, 159, 192, 0.55);
         letter-spacing: 0.5px;
-      }
-
-      #divider {
-        width: 120px;
-        height: 4px;
-        margin: 30px 0 26px;
-        border-radius: 2px;
-        background: linear-gradient(90deg, rgba(36, 159, 192, 0), #249fc0, rgba(36, 159, 192, 0));
-      }
-
-      #tag {
-        font-weight: 600;
-        font-size: 26px;
-        letter-spacing: 3px;
-        color: rgba(255, 255, 255, 0.75);
-        text-transform: uppercase;
       }
     </style>
   </head>
   <body>
     <div id="stage">
-      <div id="photo"></div>
-      <div id="panel">
-        <div id="artist">NEYA</div>
-        <div id="title">ON MY<br />WAVE</div>
-        <div id="divider"></div>
-        <div id="tag">Official Visualizer</div>
+      <div id="bg-blur"></div>
+      <div id="photo-frame">
+        <img src="../assets/hf_20260526_225013_a148f707-f95f-4231-9952-368d1e40e359.png" />
       </div>
+      <div id="title"><span>On My Wave</span></div>
     </div>
   </body>
 </html>
