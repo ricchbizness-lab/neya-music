@@ -149,22 +149,6 @@ const html = `<!doctype html>
         z-index: 1;
       }
 
-      /* Ambient glow behind the lyrics — pulses on the paused GSAP timeline
-         (never a real-time CSS animation) so it stays frame-accurate under
-         render capture, which scrubs composition time rather than wall time. */
-      .bg-glow {
-        position: absolute;
-        inset: 0;
-        z-index: 2;
-        background: radial-gradient(
-          circle at 50% 52%,
-          rgba(36, 159, 192, 0.55) 0%,
-          rgba(36, 159, 192, 0) 60%
-        );
-        opacity: 0.12;
-        pointer-events: none;
-      }
-
       /* Lyric line overlay — vertically + horizontally centered so it never
          collides with the NEYA wordmark baked into the bottom of the poster.
          Explicit z-index: the runtime's own video-visibility handling can stack
@@ -224,8 +208,6 @@ const html = `<!doctype html>
     >
 ${videoBlocks}
 
-      <div id="bg-glow" class="bg-glow"></div>
-
 ${lyricBlocks}
 
       <!--
@@ -257,25 +239,6 @@ ${lyricBlocks}
       const tl = gsap.timeline({ paused: true });
 
       const totalDuration = parseFloat(document.getElementById("root").dataset.duration);
-
-      // Ambient glow pulse behind the lyrics, timed to a fixed reference
-      // tempo (~100 BPM) — there's no audio analysis, so this is a steady
-      // approximation rather than a true beat-synced pulse.
-      const glowEl = document.getElementById("bg-glow");
-      if (glowEl) {
-        const BEAT = 0.6;
-        tl.to(
-          glowEl,
-          {
-            opacity: 0.35,
-            duration: BEAT,
-            repeat: Math.max(0, Math.floor(totalDuration / BEAT) - 1),
-            yoyo: true,
-            ease: "sine.inOut",
-          },
-          0,
-        );
-      }
 
       // Lyric lines: scale/rotate/fade in and out (fade length clamped to
       // half the segment's own duration so a very short line can't produce a
