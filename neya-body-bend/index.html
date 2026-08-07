@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="en" data-resolution="portrait">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1080, height=1920" />
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <title>Neya — Body Bend</title>
+    <script src="vendor/gsap.min.js"></script>
     <style>
       * {
         margin: 0;
@@ -19,40 +20,1140 @@
         background: #000;
       }
       body {
-        font-family: "Inter", sans-serif;
+        font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
       }
-      code,
-      pre,
-      .monospace {
-        font-family: "JetBrains Mono", monospace;
+
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+      }
+
+      video.clip,
+      img.clip {
+        position: absolute;
+        inset: 0;
+        width: 1080px;
+        height: 1920px;
+        object-fit: cover;
+        z-index: 1;
+      }
+
+      .visual-wrap,
+      .visual-beat,
+      .visual-kb {
+        position: absolute;
+        inset: 0;
+      }
+
+      img.glitch-ghost {
+        position: absolute;
+        inset: 0;
+        width: 1080px;
+        height: 1920px;
+        object-fit: cover;
+        z-index: 1;
+        opacity: 0;
+        mix-blend-mode: screen;
+        pointer-events: none;
+      }
+      img.glitch-ghost-r {
+        filter: sepia(1) saturate(8) hue-rotate(-58deg) brightness(1.1);
+      }
+      img.glitch-ghost-c {
+        filter: sepia(1) saturate(8) hue-rotate(148deg) brightness(1.1);
+      }
+
+      /* Screen-locked VHS scanlines — not inside .visual-wrap/.visual-kb, a
+         scanline overlay reads as a property of the screen, not the scene.
+         Below the lyrics (z-index 10); hidden by default, flashed on
+         briefly at each glitch beat. */
+      .glitch-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        opacity: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.4) 0px,
+          rgba(255, 255, 255, 0.4) 1px,
+          rgba(0, 0, 0, 0) 1px,
+          rgba(0, 0, 0, 0) 3px
+        );
+        mix-blend-mode: overlay;
+      }
+
+      .glitch-flash {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        opacity: 0;
+        pointer-events: none;
+        background: #ffffff;
+        mix-blend-mode: overlay;
+      }
+
+      /* Permanent, static, subtle — essentially free: no animation, no
+         per-frame GSAP cost, painted the same way every frame. */
+      .vignette-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        background: radial-gradient(
+          ellipse at 50% 45%,
+          rgba(0, 0, 0, 0) 45%,
+          rgba(0, 0, 0, 0.55) 100%
+        );
+      }
+      .grain-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        opacity: 0.05;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'200'%20height%3D'200'%3E%3Cfilter%20id%3D'n'%3E%3CfeTurbulence%20type%3D'fractalNoise'%20baseFrequency%3D'0.85'%20numOctaves%3D'2'%20seed%3D'7'%20stitchTiles%3D'stitch'%2F%3E%3CfeColorMatrix%20type%3D'saturate'%20values%3D'0'%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D'100%25'%20height%3D'100%25'%20filter%3D'url(%23n)'%2F%3E%3C%2Fsvg%3E");
+        background-size: 200px 200px;
+      }
+
+      /* Ambient glow behind the lyrics — pulses on the paused GSAP timeline
+         (never real-time CSS @keyframes) so it stays frame-accurate under
+         render capture, which scrubs composition time, not wall time. */
+      .bg-glow {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        background: radial-gradient(
+          circle at 50% 52%,
+          rgba(36, 159, 192, 0.55) 0%,
+          rgba(36, 159, 192, 0) 60%
+        );
+        opacity: 0.12;
+        pointer-events: none;
+      }
+
+      .lyric {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 64px;
+        text-align: center;
+        pointer-events: none;
+      }
+      .lyric span {
+        font-family: "Poppins", "Inter", sans-serif;
+        font-weight: 800;
+        font-size: 84px;
+        line-height: 1.15;
+        color: #ffffff;
+        -webkit-text-stroke: 2px #ffffff;
+        text-shadow:
+          0 0 14px rgba(36, 159, 192, 0.95),
+          0 0 30px rgba(36, 159, 192, 0.8),
+          0 0 55px rgba(36, 159, 192, 0.5);
+        letter-spacing: 0.5px;
+      }
+      .lyric .word {
+        color: rgba(255, 255, 255, 0.4);
       }
     </style>
   </head>
   <body>
+    <!--
+      ============================================================
+      GENERATED FILE — DO NOT HAND-EDIT CLIPS/LYRICS/TIMING BELOW
+      ============================================================
+      Generated by scripts/build.mjs from clips.config.json.
+    -->
     <div
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="10"
       data-width="1080"
       data-height="1920"
+      data-duration="178.774036"
     >
-      
-      
-
-      <!--
-        Add your clips here. Example:
-        <div id="title" class="clip" data-start="0" data-duration="5" data-track-index="1"
-             style="font-size: 64px; color: #fff; padding: 40px">
-          Hello World
+      <div id="clip-1-wrap" class="visual-wrap">
+        <div id="clip-1-beat" class="visual-beat">
+          <div id="clip-1-kb" class="visual-kb">
+            <video
+              id="clip-1"
+              class="clip"
+              src="assets/body-bend-loop.mp4"
+              data-start="0"
+              data-duration="178.774036"
+              data-track-index="0"
+              muted
+              playsinline
+            ></video>
+          </div>
         </div>
-      -->
+      </div>
+      <div id="clip-1-glitch-overlay" class="glitch-overlay" aria-hidden="true"></div>
+      <div id="clip-1-glitch-flash" class="glitch-flash" aria-hidden="true"></div>
+
+      <div class="vignette-overlay" aria-hidden="true"></div>
+      <div class="grain-overlay" aria-hidden="true"></div>
+      <div id="bg-glow" class="bg-glow"></div>
+
+      <div
+        id="lyric-1"
+        class="lyric clip"
+        data-start="15.54"
+        data-duration="2.36"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">You</span> <span class="word">came</span> <span class="word">in</span> <span class="word">slow</span></span>
+      </div>
+      <div
+        id="lyric-2"
+        class="lyric clip"
+        data-start="18.4"
+        data-duration="1.76"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Then</span> <span class="word">you</span> <span class="word">took</span> <span class="word">the</span> <span class="word">floor</span></span>
+      </div>
+      <div
+        id="lyric-3"
+        class="lyric clip"
+        data-start="20.82"
+        data-duration="1.26"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Gold</span> <span class="word">on</span> <span class="word">your</span> <span class="word">skin</span></span>
+      </div>
+      <div
+        id="lyric-4"
+        class="lyric clip"
+        data-start="22.7"
+        data-duration="1.62"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Got</span> <span class="word">me</span> <span class="word">wanting</span> <span class="word">more</span></span>
+      </div>
+      <div
+        id="lyric-5"
+        class="lyric clip"
+        data-start="24.96"
+        data-duration="1.34"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Lean</span> <span class="word">to</span> <span class="word">the</span> <span class="word">left</span></span>
+      </div>
+      <div
+        id="lyric-6"
+        class="lyric clip"
+        data-start="26.84"
+        data-duration="1.46"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Then</span> <span class="word">you</span> <span class="word">switch</span> <span class="word">that</span> <span class="word">waist</span></span>
+      </div>
+      <div
+        id="lyric-7"
+        class="lyric clip"
+        data-start="28.3"
+        data-duration="2.7"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">One</span> <span class="word">little</span> <span class="word">smile</span></span>
+      </div>
+      <div
+        id="lyric-8"
+        class="lyric clip"
+        data-start="31"
+        data-duration="2.54"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">And</span> <span class="word">I</span> <span class="word">lost</span> <span class="word">my</span> <span class="word">place</span></span>
+      </div>
+      <div
+        id="lyric-9"
+        class="lyric clip"
+        data-start="33.54"
+        data-duration="2.04"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">You</span> <span class="word">make</span> <span class="word">it</span> <span class="word">hard</span></span>
+      </div>
+      <div
+        id="lyric-10"
+        class="lyric clip"
+        data-start="35.58"
+        data-duration="1.24"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">To</span> <span class="word">act</span> <span class="word">all</span> <span class="word">cool</span></span>
+      </div>
+      <div
+        id="lyric-11"
+        class="lyric clip"
+        data-start="36.82"
+        data-duration="2.58"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">You</span> <span class="word">move</span> <span class="word">so</span> <span class="word">clean</span></span>
+      </div>
+      <div
+        id="lyric-12"
+        class="lyric clip"
+        data-start="39.48"
+        data-duration="2.26"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Like</span> <span class="word">you</span> <span class="word">break</span> <span class="word">the</span> <span class="word">rules</span></span>
+      </div>
+      <div
+        id="lyric-13"
+        class="lyric clip"
+        data-start="41.74"
+        data-duration="1.2"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Come</span> <span class="word">closer</span> <span class="word">now</span></span>
+      </div>
+      <div
+        id="lyric-14"
+        class="lyric clip"
+        data-start="43.14"
+        data-duration="0.92"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Don't</span> <span class="word">let</span> <span class="word">go</span></span>
+      </div>
+      <div
+        id="lyric-15"
+        class="lyric clip"
+        data-start="44.06"
+        data-duration="0.92"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">One</span> <span class="word">two</span> <span class="word">step</span></span>
+      </div>
+      <div
+        id="lyric-16"
+        class="lyric clip"
+        data-start="45"
+        data-duration="0.96"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Then</span> <span class="word">you</span> <span class="word">take</span> <span class="word">control</span></span>
+      </div>
+      <div
+        id="lyric-17"
+        class="lyric clip"
+        data-start="45.96"
+        data-duration="1.08"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Hands</span> <span class="word">on</span> <span class="word">your</span> <span class="word">hips</span></span>
+      </div>
+      <div
+        id="lyric-18"
+        class="lyric clip"
+        data-start="47.16"
+        data-duration="0.9"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Make</span> <span class="word">the</span> <span class="word">room</span> <span class="word">obey</span></span>
+      </div>
+      <div
+        id="lyric-19"
+        class="lyric clip"
+        data-start="48.06"
+        data-duration="1.08"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Say</span> <span class="word">my</span> <span class="word">name</span> <span class="word">once</span></span>
+      </div>
+      <div
+        id="lyric-20"
+        class="lyric clip"
+        data-start="49.14"
+        data-duration="1.3"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Then</span> <span class="word">you</span> <span class="word">pull</span> <span class="word">away</span></span>
+      </div>
+      <div
+        id="lyric-21"
+        class="lyric clip"
+        data-start="50.44"
+        data-duration="2.16"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Body</span> <span class="word">bend,</span> <span class="word">body</span> <span class="word">bend</span></span>
+      </div>
+      <div
+        id="lyric-22"
+        class="lyric clip"
+        data-start="52.6"
+        data-duration="3.16"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Do</span> <span class="word">it</span> <span class="word">again,</span> <span class="word">do</span> <span class="word">it</span> <span class="word">again</span></span>
+      </div>
+      <div
+        id="lyric-23"
+        class="lyric clip"
+        data-start="55.76"
+        data-duration="1.78"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Body</span> <span class="word">bend,</span> <span class="word">body</span> <span class="word">bend</span></span>
+      </div>
+      <div
+        id="lyric-24"
+        class="lyric clip"
+        data-start="57.54"
+        data-duration="2.46"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">You</span> <span class="word">got</span> <span class="word">that</span> <span class="word">fire,</span> <span class="word">my</span> <span class="word">friend</span></span>
+      </div>
+      <div
+        id="lyric-25"
+        class="lyric clip"
+        data-start="60"
+        data-duration="1.78"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Body</span> <span class="word">bend,</span> <span class="word">body</span> <span class="word">bend</span></span>
+      </div>
+      <div
+        id="lyric-26"
+        class="lyric clip"
+        data-start="61.78"
+        data-duration="2.58"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Everybody</span> <span class="word">watch</span> <span class="word">you</span> <span class="word">win</span></span>
+      </div>
+      <div
+        id="lyric-27"
+        class="lyric clip"
+        data-start="64.36"
+        data-duration="1.58"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Body</span> <span class="word">bend,</span> <span class="word">body</span> <span class="word">bend</span></span>
+      </div>
+      <div
+        id="lyric-28"
+        class="lyric clip"
+        data-start="65.94"
+        data-duration="2.7"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Take</span> <span class="word">it</span> <span class="word">low,</span> <span class="word">bring</span> <span class="word">it</span> <span class="word">in</span> <span class="word">(bring</span> <span class="word">it</span> <span class="word">in)</span></span>
+      </div>
+      <div
+        id="lyric-29"
+        class="lyric clip"
+        data-start="73.98"
+        data-duration="1.98"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Take</span> <span class="word">it</span> <span class="word">low,</span> <span class="word">bring</span> <span class="word">it</span> <span class="word">in</span></span>
+      </div>
+      <div
+        id="lyric-30"
+        class="lyric clip"
+        data-start="75.96"
+        data-duration="1.12"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Short</span> <span class="word">skirt</span> <span class="word">swing</span></span>
+      </div>
+      <div
+        id="lyric-31"
+        class="lyric clip"
+        data-start="77.08"
+        data-duration="1.06"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">And</span> <span class="word">your</span> <span class="word">chain</span> <span class="word">too</span> <span class="word">loud</span></span>
+      </div>
+      <div
+        id="lyric-32"
+        class="lyric clip"
+        data-start="78.14"
+        data-duration="1"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Every</span> <span class="word">eye</span> <span class="word">in</span> <span class="word">here</span></span>
+      </div>
+      <div
+        id="lyric-33"
+        class="lyric clip"
+        data-start="79.14"
+        data-duration="1.14"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Locked</span> <span class="word">on</span> <span class="word">your</span> <span class="word">style</span></span>
+      </div>
+      <div
+        id="lyric-34"
+        class="lyric clip"
+        data-start="80.28"
+        data-duration="1.02"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">You</span> <span class="word">got</span> <span class="word">that</span> <span class="word">drip</span></span>
+      </div>
+      <div
+        id="lyric-35"
+        class="lyric clip"
+        data-start="81.3"
+        data-duration="1"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">With</span> <span class="word">a</span> <span class="word">rebel</span> <span class="word">grin</span></span>
+      </div>
+      <div
+        id="lyric-36"
+        class="lyric clip"
+        data-start="82.3"
+        data-duration="1.14"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">When</span> <span class="word">you</span> <span class="word">back</span> <span class="word">it</span> <span class="word">up</span></span>
+      </div>
+      <div
+        id="lyric-37"
+        class="lyric clip"
+        data-start="83.44"
+        data-duration="1.04"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">I</span> <span class="word">fall</span> <span class="word">right</span> <span class="word">in</span></span>
+      </div>
+      <div
+        id="lyric-38"
+        class="lyric clip"
+        data-start="84.74"
+        data-duration="0.76"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">One</span> <span class="word">step</span> <span class="word">back</span></span>
+      </div>
+      <div
+        id="lyric-39"
+        class="lyric clip"
+        data-start="85.52"
+        data-duration="1.14"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Then</span> <span class="word">you</span> <span class="word">bounce</span> <span class="word">right</span> <span class="word">round</span></span>
+      </div>
+      <div
+        id="lyric-40"
+        class="lyric clip"
+        data-start="86.66"
+        data-duration="0.94"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Floor</span> <span class="word">shake</span> <span class="word">now</span></span>
+      </div>
+      <div
+        id="lyric-41"
+        class="lyric clip"
+        data-start="87.6"
+        data-duration="1.14"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">When</span> <span class="word">you</span> <span class="word">wear</span> <span class="word">that</span> <span class="word">crown</span></span>
+      </div>
+      <div
+        id="lyric-42"
+        class="lyric clip"
+        data-start="88.74"
+        data-duration="0.96"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">No</span> <span class="word">slow</span> <span class="word">talk</span></span>
+      </div>
+      <div
+        id="lyric-43"
+        class="lyric clip"
+        data-start="89.7"
+        data-duration="1"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">You</span> <span class="word">just</span> <span class="word">set</span> <span class="word">that</span> <span class="word">pace</span></span>
+      </div>
+      <div
+        id="lyric-44"
+        class="lyric clip"
+        data-start="90.7"
+        data-duration="1"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Turn</span> <span class="word">the</span> <span class="word">whole</span> <span class="word">room</span> <span class="word">hot</span></span>
+      </div>
+      <div
+        id="lyric-45"
+        class="lyric clip"
+        data-start="91.7"
+        data-duration="0.94"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">With</span> <span class="word">one</span> <span class="word">waist</span> <span class="word">shake</span></span>
+      </div>
+      <div
+        id="lyric-46"
+        class="lyric clip"
+        data-start="92.64"
+        data-duration="1.02"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Come</span> <span class="word">closer</span> <span class="word">now</span></span>
+      </div>
+      <div
+        id="lyric-47"
+        class="lyric clip"
+        data-start="93.66"
+        data-duration="0.86"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Don't</span> <span class="word">let</span> <span class="word">go</span></span>
+      </div>
+      <div
+        id="lyric-48"
+        class="lyric clip"
+        data-start="94.52"
+        data-duration="0.98"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">One</span> <span class="word">two</span> <span class="word">step</span></span>
+      </div>
+      <div
+        id="lyric-49"
+        class="lyric clip"
+        data-start="95.5"
+        data-duration="1"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Then</span> <span class="word">you</span> <span class="word">take</span> <span class="word">control</span></span>
+      </div>
+      <div
+        id="lyric-50"
+        class="lyric clip"
+        data-start="96.5"
+        data-duration="1.06"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Hands</span> <span class="word">on</span> <span class="word">your</span> <span class="word">hips</span></span>
+      </div>
+      <div
+        id="lyric-51"
+        class="lyric clip"
+        data-start="97.7"
+        data-duration="0.94"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Make</span> <span class="word">the</span> <span class="word">room</span> <span class="word">obey</span></span>
+      </div>
+      <div
+        id="lyric-52"
+        class="lyric clip"
+        data-start="98.64"
+        data-duration="1.04"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Say</span> <span class="word">my</span> <span class="word">name</span> <span class="word">once</span></span>
+      </div>
+      <div
+        id="lyric-53"
+        class="lyric clip"
+        data-start="99.68"
+        data-duration="1.3"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Then</span> <span class="word">you</span> <span class="word">pull</span> <span class="word">away</span></span>
+      </div>
+      <div
+        id="lyric-54"
+        class="lyric clip"
+        data-start="100.98"
+        data-duration="1.94"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Body</span> <span class="word">bend,</span> <span class="word">body</span> <span class="word">bend</span></span>
+      </div>
+      <div
+        id="lyric-55"
+        class="lyric clip"
+        data-start="102.92"
+        data-duration="2.74"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Do</span> <span class="word">it</span> <span class="word">again,</span> <span class="word">do</span> <span class="word">it</span> <span class="word">again</span></span>
+      </div>
+      <div
+        id="lyric-56"
+        class="lyric clip"
+        data-start="106.34"
+        data-duration="1.74"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Body</span> <span class="word">bend,</span> <span class="word">body</span> <span class="word">bend</span></span>
+      </div>
+      <div
+        id="lyric-57"
+        class="lyric clip"
+        data-start="108.08"
+        data-duration="2.34"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">You</span> <span class="word">got</span> <span class="word">that</span> <span class="word">fire,</span> <span class="word">my</span> <span class="word">friend</span></span>
+      </div>
+      <div
+        id="lyric-58"
+        class="lyric clip"
+        data-start="110.42"
+        data-duration="1.88"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Body</span> <span class="word">bend,</span> <span class="word">body</span> <span class="word">bend</span></span>
+      </div>
+      <div
+        id="lyric-59"
+        class="lyric clip"
+        data-start="112.3"
+        data-duration="2.52"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Everybody</span> <span class="word">watch</span> <span class="word">you</span> <span class="word">win</span></span>
+      </div>
+      <div
+        id="lyric-60"
+        class="lyric clip"
+        data-start="114.82"
+        data-duration="1.66"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Body</span> <span class="word">bend,</span> <span class="word">body</span> <span class="word">bend</span></span>
+      </div>
+      <div
+        id="lyric-61"
+        class="lyric clip"
+        data-start="116.48"
+        data-duration="2"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Take</span> <span class="word">it</span> <span class="word">low,</span> <span class="word">bring</span> <span class="word">it</span> <span class="word">in</span> <span class="word">(bring</span> <span class="word">it</span> <span class="word">in)</span></span>
+      </div>
+      <div
+        id="lyric-62"
+        class="lyric clip"
+        data-start="123.56"
+        data-duration="3.64"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Take</span> <span class="word">it</span> <span class="word">low,</span> <span class="word">bring</span> <span class="word">it</span> <span class="word">in</span></span>
+      </div>
+      <div
+        id="lyric-63"
+        class="lyric clip"
+        data-start="127.2"
+        data-duration="1.72"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Step</span> <span class="word">by</span> <span class="word">step</span></span>
+      </div>
+      <div
+        id="lyric-64"
+        class="lyric clip"
+        data-start="128.94"
+        data-duration="2.5"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">You</span> <span class="word">change</span> <span class="word">the</span> <span class="word">air</span></span>
+      </div>
+      <div
+        id="lyric-65"
+        class="lyric clip"
+        data-start="131.44"
+        data-duration="1.58"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">One</span> <span class="word">touch</span> <span class="word">down</span></span>
+      </div>
+      <div
+        id="lyric-66"
+        class="lyric clip"
+        data-start="133.02"
+        data-duration="2.18"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">And</span> <span class="word">I'm</span> <span class="word">right</span> <span class="word">there</span></span>
+      </div>
+      <div
+        id="lyric-67"
+        class="lyric clip"
+        data-start="135.2"
+        data-duration="1.62"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Spin</span> <span class="word">so</span> <span class="word">quick</span></span>
+      </div>
+      <div
+        id="lyric-68"
+        class="lyric clip"
+        data-start="137.32"
+        data-duration="2.1"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Got</span> <span class="word">me</span> <span class="word">out</span> <span class="word">my</span> <span class="word">mind</span></span>
+      </div>
+      <div
+        id="lyric-69"
+        class="lyric clip"
+        data-start="139.42"
+        data-duration="1.96"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">When</span> <span class="word">you</span> <span class="word">move</span> <span class="word">like</span> <span class="word">that</span></span>
+      </div>
+      <div
+        id="lyric-70"
+        class="lyric clip"
+        data-start="141.76"
+        data-duration="1.36"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">I'm</span> <span class="word">losing</span> <span class="word">time</span></span>
+      </div>
+      <div
+        id="lyric-71"
+        class="lyric clip"
+        data-start="143.12"
+        data-duration="2.16"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Body</span> <span class="word">bend,</span> <span class="word">body</span> <span class="word">bend</span></span>
+      </div>
+      <div
+        id="lyric-72"
+        class="lyric clip"
+        data-start="145.28"
+        data-duration="3.28"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Do</span> <span class="word">it</span> <span class="word">again,</span> <span class="word">do</span> <span class="word">it</span> <span class="word">again</span></span>
+      </div>
+      <div
+        id="lyric-73"
+        class="lyric clip"
+        data-start="148.56"
+        data-duration="1.62"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Body</span> <span class="word">bend,</span> <span class="word">body</span> <span class="word">bend</span></span>
+      </div>
+      <div
+        id="lyric-74"
+        class="lyric clip"
+        data-start="150.18"
+        data-duration="2.48"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">You</span> <span class="word">got</span> <span class="word">that</span> <span class="word">fire,</span> <span class="word">my</span> <span class="word">friend</span></span>
+      </div>
+      <div
+        id="lyric-75"
+        class="lyric clip"
+        data-start="152.66"
+        data-duration="1.72"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Body</span> <span class="word">bend,</span> <span class="word">body</span> <span class="word">bend</span></span>
+      </div>
+      <div
+        id="lyric-76"
+        class="lyric clip"
+        data-start="154.38"
+        data-duration="2.58"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Everybody</span> <span class="word">watch</span> <span class="word">you</span> <span class="word">win</span></span>
+      </div>
+      <div
+        id="lyric-77"
+        class="lyric clip"
+        data-start="156.96"
+        data-duration="1.66"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Body</span> <span class="word">bend,</span> <span class="word">body</span> <span class="word">bend</span></span>
+      </div>
+      <div
+        id="lyric-78"
+        class="lyric clip"
+        data-start="158.62"
+        data-duration="2.66"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Take</span> <span class="word">it</span> <span class="word">low,</span> <span class="word">bring</span> <span class="word">it</span> <span class="word">in</span> <span class="word">(bring</span> <span class="word">it</span> <span class="word">in)</span></span>
+      </div>
+      <div
+        id="lyric-79"
+        class="lyric clip"
+        data-start="167.14"
+        data-duration="2"
+        data-track-index="1"
+        data-layout-allow-occlusion
+      >
+        <span><span class="word">Bring</span> <span class="word">it</span> <span class="word">in</span></span>
+      </div>
+
+      <audio
+        id="track-audio"
+        src="assets/body-bend-neya.wav"
+        data-start="0"
+        data-duration="178.774036"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
     </div>
 
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      // Example: tl.from("#title", { opacity: 0, y: -50, duration: 1 }, 0);
+
+      const totalDuration = parseFloat(document.getElementById("root").dataset.duration);
+
+      // Ken Burns — one slow continuous zoom/pan across each visual clip's
+      // full duration, applied to .visual-kb (works the same for an <img>
+      // or a <video> inside it).
+      document.querySelectorAll("#root .visual-kb").forEach((kbTarget) => {
+        const mediaEl = kbTarget.querySelector(".clip");
+        if (!mediaEl) return;
+        const start = parseFloat(mediaEl.dataset.start);
+        const duration = parseFloat(mediaEl.dataset.duration);
+        tl.fromTo(
+          kbTarget,
+          { scale: 1, x: 0, y: 0 },
+          { scale: 1.14, x: -18, y: -14, duration, ease: "none" },
+          start,
+        );
+      });
+
+      // Beat-synced "zoom punch" — small continuous scale bounce on a fixed
+      // reference tempo, running the whole song.
+      const BEAT = 0.6;
+      document.querySelectorAll("#root > .visual-wrap > .visual-beat").forEach((beatEl) => {
+        tl.to(
+          beatEl,
+          {
+            scale: 1.018,
+            duration: BEAT,
+            repeat: Math.max(0, Math.floor(totalDuration / BEAT) - 1),
+            yoyo: true,
+            ease: "sine.inOut",
+          },
+          0,
+        );
+      });
+
+      // Glitch pulses at hand-picked structural moments (chorus entries,
+      // breaks) rather than a fixed interval. Jitter offsets are
+      // hand-authored fixed values, not Math.random(), to keep render
+      // output deterministic. GLITCH_BEATS must be filled in per-song to
+      // match its actual structure once lyric timing is known.
+      const GLITCH_BEATS = [50.44,75.96,100.98,127.2,143.12];
+      document.querySelectorAll("#root > .visual-wrap").forEach((wrapEl) => {
+        const mediaEl = wrapEl.querySelector(".clip");
+        const ghostR = wrapEl.querySelector(".glitch-ghost-r");
+        const ghostC = wrapEl.querySelector(".glitch-ghost-c");
+        const overlayEl = wrapEl.nextElementSibling;
+        const flashEl = overlayEl?.nextElementSibling;
+        if (
+          !mediaEl ||
+          !overlayEl?.classList.contains("glitch-overlay") ||
+          !flashEl?.classList.contains("glitch-flash")
+        ) {
+          return;
+        }
+
+        const start = parseFloat(mediaEl.dataset.start);
+        const duration = parseFloat(mediaEl.dataset.duration);
+        const JITTER = [
+          [3, -2],
+          [-4, 1],
+          [2, 2],
+          [-2, -3],
+          [1, 0],
+        ];
+
+        for (const t of GLITCH_BEATS) {
+          if (t < start || t > start + duration - 0.5) continue;
+
+          if (ghostR && ghostC) {
+            tl.set([ghostR, ghostC], { opacity: 0, x: 0 }, t);
+            tl.to(ghostR, { opacity: 0.75, x: -6, duration: 0.06 }, t);
+            tl.to(ghostC, { opacity: 0.75, x: 6, duration: 0.06 }, t);
+            tl.to([ghostR, ghostC], { opacity: 0, x: 0, duration: 0.12 }, t + 0.22);
+          }
+
+          tl.fromTo(
+            overlayEl,
+            { opacity: 0 },
+            { opacity: 0.5, duration: 0.05, yoyo: true, repeat: 3 },
+            t,
+          );
+          tl.fromTo(
+            flashEl,
+            { opacity: 0 },
+            { opacity: 0.6, duration: 0.045, yoyo: true, repeat: 1, ease: "power1.out" },
+            t,
+          );
+
+          let cursor = t;
+          JITTER.forEach(([dx, dy]) => {
+            tl.to(wrapEl, { x: dx, y: dy, duration: 0.035, ease: "none" }, cursor);
+            cursor += 0.035;
+          });
+          tl.to(wrapEl, { x: 0, y: 0, duration: 0.04, ease: "none" }, cursor);
+        }
+      });
+
+      // Ambient glow pulse behind the lyrics, same fixed reference tempo as
+      // the zoom punch.
+      const glowEl = document.getElementById("bg-glow");
+      if (glowEl) {
+        tl.to(
+          glowEl,
+          {
+            opacity: 0.35,
+            duration: BEAT,
+            repeat: Math.max(0, Math.floor(totalDuration / BEAT) - 1),
+            yoyo: true,
+            ease: "sine.inOut",
+          },
+          0,
+        );
+      }
+
+      const FADE = 0.35;
+      document.querySelectorAll("#root > .lyric").forEach((el) => {
+        const start = parseFloat(el.dataset.start);
+        const duration = parseFloat(el.dataset.duration);
+        const fade = Math.min(FADE, duration / 2);
+
+        tl.fromTo(
+          el,
+          { opacity: 0, scale: 0.82, rotation: -4, y: 26 },
+          { opacity: 1, scale: 1, rotation: 0, y: 0, duration: fade, ease: "back.out(1.7)" },
+          start,
+        );
+        tl.to(
+          el,
+          { opacity: 0, scale: 1.08, rotation: 3, duration: fade, ease: "power2.in" },
+          start + duration - fade,
+        );
+
+        const words = el.querySelectorAll(".word");
+        if (words.length) {
+          const holdStart = start + fade;
+          const holdEnd = start + duration - fade;
+          const hold = Math.max(holdEnd - holdStart, 0.05);
+          const step = hold / words.length;
+          tl.fromTo(
+            words,
+            { color: "rgba(255,255,255,0.4)" },
+            { color: "#ffffff", duration: Math.min(0.25, step), stagger: step, ease: "none" },
+            holdStart,
+          );
+        }
+      });
+
       window.__timelines["main"] = tl;
     </script>
   </body>

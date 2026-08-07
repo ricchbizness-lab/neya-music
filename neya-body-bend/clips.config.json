@@ -1,0 +1,417 @@
+{
+  "width": 1080,
+  "height": 1920,
+  "duration": 178.774036,
+  "audio": "assets/body-bend-neya.wav",
+  "clips": [
+    {
+      "src": "assets/body-bend-loop.mp4",
+      "type": "video",
+      "duration": 178.774036
+    }
+  ],
+  "glitchBeats": [
+    50.44,
+    75.96,
+    100.98,
+    127.2,
+    143.12
+  ],
+  "lyrics": [
+    {
+      "text": "You came in slow",
+      "start": 15.54,
+      "end": 17.9
+    },
+    {
+      "text": "Then you took the floor",
+      "start": 18.4,
+      "end": 20.16
+    },
+    {
+      "text": "Gold on your skin",
+      "start": 20.82,
+      "end": 22.08
+    },
+    {
+      "text": "Got me wanting more",
+      "start": 22.7,
+      "end": 24.32
+    },
+    {
+      "text": "Lean to the left",
+      "start": 24.96,
+      "end": 26.3
+    },
+    {
+      "text": "Then you switch that waist",
+      "start": 26.84,
+      "end": 28.3
+    },
+    {
+      "text": "One little smile",
+      "start": 28.3,
+      "end": 31.0
+    },
+    {
+      "text": "And I lost my place",
+      "start": 31.0,
+      "end": 33.54
+    },
+    {
+      "text": "You make it hard",
+      "start": 33.54,
+      "end": 35.58
+    },
+    {
+      "text": "To act all cool",
+      "start": 35.58,
+      "end": 36.82
+    },
+    {
+      "text": "You move so clean",
+      "start": 36.82,
+      "end": 39.4
+    },
+    {
+      "text": "Like you break the rules",
+      "start": 39.48,
+      "end": 41.74
+    },
+    {
+      "text": "Come closer now",
+      "start": 41.74,
+      "end": 42.94
+    },
+    {
+      "text": "Don't let go",
+      "start": 43.14,
+      "end": 44.06
+    },
+    {
+      "text": "One two step",
+      "start": 44.06,
+      "end": 44.98
+    },
+    {
+      "text": "Then you take control",
+      "start": 45.0,
+      "end": 45.96
+    },
+    {
+      "text": "Hands on your hips",
+      "start": 45.96,
+      "end": 47.04
+    },
+    {
+      "text": "Make the room obey",
+      "start": 47.16,
+      "end": 48.06
+    },
+    {
+      "text": "Say my name once",
+      "start": 48.06,
+      "end": 49.14
+    },
+    {
+      "text": "Then you pull away",
+      "start": 49.14,
+      "end": 50.44
+    },
+    {
+      "text": "Body bend, body bend",
+      "start": 50.44,
+      "end": 52.6
+    },
+    {
+      "text": "Do it again, do it again",
+      "start": 52.6,
+      "end": 55.76
+    },
+    {
+      "text": "Body bend, body bend",
+      "start": 55.76,
+      "end": 57.54
+    },
+    {
+      "text": "You got that fire, my friend",
+      "start": 57.54,
+      "end": 60.0
+    },
+    {
+      "text": "Body bend, body bend",
+      "start": 60.0,
+      "end": 61.78
+    },
+    {
+      "text": "Everybody watch you win",
+      "start": 61.78,
+      "end": 64.36
+    },
+    {
+      "text": "Body bend, body bend",
+      "start": 64.36,
+      "end": 65.94
+    },
+    {
+      "text": "Take it low, bring it in (bring it in)",
+      "start": 65.94,
+      "end": 68.64
+    },
+    {
+      "text": "Take it low, bring it in",
+      "start": 73.98,
+      "end": 75.96
+    },
+    {
+      "text": "Short skirt swing",
+      "start": 75.96,
+      "end": 77.08
+    },
+    {
+      "text": "And your chain too loud",
+      "start": 77.08,
+      "end": 78.14
+    },
+    {
+      "text": "Every eye in here",
+      "start": 78.14,
+      "end": 79.14
+    },
+    {
+      "text": "Locked on your style",
+      "start": 79.14,
+      "end": 80.28
+    },
+    {
+      "text": "You got that drip",
+      "start": 80.28,
+      "end": 81.3
+    },
+    {
+      "text": "With a rebel grin",
+      "start": 81.3,
+      "end": 82.3
+    },
+    {
+      "text": "When you back it up",
+      "start": 82.3,
+      "end": 83.44
+    },
+    {
+      "text": "I fall right in",
+      "start": 83.44,
+      "end": 84.48
+    },
+    {
+      "text": "One step back",
+      "start": 84.74,
+      "end": 85.5
+    },
+    {
+      "text": "Then you bounce right round",
+      "start": 85.52,
+      "end": 86.66
+    },
+    {
+      "text": "Floor shake now",
+      "start": 86.66,
+      "end": 87.6
+    },
+    {
+      "text": "When you wear that crown",
+      "start": 87.6,
+      "end": 88.74
+    },
+    {
+      "text": "No slow talk",
+      "start": 88.74,
+      "end": 89.7
+    },
+    {
+      "text": "You just set that pace",
+      "start": 89.7,
+      "end": 90.7
+    },
+    {
+      "text": "Turn the whole room hot",
+      "start": 90.7,
+      "end": 91.7
+    },
+    {
+      "text": "With one waist shake",
+      "start": 91.7,
+      "end": 92.64
+    },
+    {
+      "text": "Come closer now",
+      "start": 92.64,
+      "end": 93.66
+    },
+    {
+      "text": "Don't let go",
+      "start": 93.66,
+      "end": 94.52
+    },
+    {
+      "text": "One two step",
+      "start": 94.52,
+      "end": 95.5
+    },
+    {
+      "text": "Then you take control",
+      "start": 95.5,
+      "end": 96.5
+    },
+    {
+      "text": "Hands on your hips",
+      "start": 96.5,
+      "end": 97.56
+    },
+    {
+      "text": "Make the room obey",
+      "start": 97.7,
+      "end": 98.64
+    },
+    {
+      "text": "Say my name once",
+      "start": 98.64,
+      "end": 99.68
+    },
+    {
+      "text": "Then you pull away",
+      "start": 99.68,
+      "end": 100.98
+    },
+    {
+      "text": "Body bend, body bend",
+      "start": 100.98,
+      "end": 102.92
+    },
+    {
+      "text": "Do it again, do it again",
+      "start": 102.92,
+      "end": 105.66
+    },
+    {
+      "text": "Body bend, body bend",
+      "start": 106.34,
+      "end": 108.08
+    },
+    {
+      "text": "You got that fire, my friend",
+      "start": 108.08,
+      "end": 110.42
+    },
+    {
+      "text": "Body bend, body bend",
+      "start": 110.42,
+      "end": 112.3
+    },
+    {
+      "text": "Everybody watch you win",
+      "start": 112.3,
+      "end": 114.82
+    },
+    {
+      "text": "Body bend, body bend",
+      "start": 114.82,
+      "end": 116.48
+    },
+    {
+      "text": "Take it low, bring it in (bring it in)",
+      "start": 116.48,
+      "end": 118.48
+    },
+    {
+      "text": "Take it low, bring it in",
+      "start": 123.56,
+      "end": 127.2
+    },
+    {
+      "text": "Step by step",
+      "start": 127.2,
+      "end": 128.92
+    },
+    {
+      "text": "You change the air",
+      "start": 128.94,
+      "end": 131.44
+    },
+    {
+      "text": "One touch down",
+      "start": 131.44,
+      "end": 133.02
+    },
+    {
+      "text": "And I'm right there",
+      "start": 133.02,
+      "end": 135.2
+    },
+    {
+      "text": "Spin so quick",
+      "start": 135.2,
+      "end": 136.82
+    },
+    {
+      "text": "Got me out my mind",
+      "start": 137.32,
+      "end": 139.42
+    },
+    {
+      "text": "When you move like that",
+      "start": 139.42,
+      "end": 141.38
+    },
+    {
+      "text": "I'm losing time",
+      "start": 141.76,
+      "end": 143.12
+    },
+    {
+      "text": "Body bend, body bend",
+      "start": 143.12,
+      "end": 145.28
+    },
+    {
+      "text": "Do it again, do it again",
+      "start": 145.28,
+      "end": 148.56
+    },
+    {
+      "text": "Body bend, body bend",
+      "start": 148.56,
+      "end": 150.18
+    },
+    {
+      "text": "You got that fire, my friend",
+      "start": 150.18,
+      "end": 152.66
+    },
+    {
+      "text": "Body bend, body bend",
+      "start": 152.66,
+      "end": 154.38
+    },
+    {
+      "text": "Everybody watch you win",
+      "start": 154.38,
+      "end": 156.96
+    },
+    {
+      "text": "Body bend, body bend",
+      "start": 156.96,
+      "end": 158.62
+    },
+    {
+      "text": "Take it low, bring it in (bring it in)",
+      "start": 158.62,
+      "end": 161.28
+    },
+    {
+      "text": "Bring it in",
+      "start": 167.14,
+      "end": 169.14
+    }
+  ]
+}
