@@ -1,0 +1,252 @@
+{
+  "$comment": "Source of truth for the neya-rio-night composition. Edit this file only, then run npm run build:composition. VISUAL IS A PLACEHOLDER (reused On My Wave poster) pending real art/clip from the user.",
+  "width": 1080,
+  "height": 1920,
+  "duration": 164.88,
+  "audio": "assets/rio-night-neya.wav",
+  "poster": "assets/placeholder-poster.png",
+  "clips": [
+    {
+      "src": "assets/placeholder-poster.png",
+      "type": "image",
+      "duration": 164.88
+    }
+  ],
+  "lyrics": [
+    {
+      "text": "Closer... 😏",
+      "start": 0.0,
+      "end": 1.2
+    },
+    {
+      "text": "Not yet ⏳",
+      "start": 1.2,
+      "end": 3.04
+    },
+    {
+      "text": "Meet me on the rooftop 🌃",
+      "start": 5.4,
+      "end": 7.2
+    },
+    {
+      "text": "Meet me on the rooftop 🌃",
+      "start": 15.98,
+      "end": 19.1
+    },
+    {
+      "text": "Two AM and the city's still awake 🌙",
+      "start": 19.1,
+      "end": 22.26
+    },
+    {
+      "text": "Neon signs reflecting in the water on the lake 💧",
+      "start": 22.76,
+      "end": 26.18
+    },
+    {
+      "text": "I told him meet me where nobody knows my name 🎭",
+      "start": 26.18,
+      "end": 30.38
+    },
+    {
+      "text": "Baby, tonight I'm not playing any game 🎲",
+      "start": 30.38,
+      "end": 34.26
+    },
+    {
+      "text": "He came dressed sharp but I dressed sharper 🖤",
+      "start": 34.26,
+      "end": 36.32
+    },
+    {
+      "text": "Every step I take is calculated harder 👠",
+      "start": 36.32,
+      "end": 38.24
+    },
+    {
+      "text": "I don't waste words, I let my movements speak 💋",
+      "start": 38.24,
+      "end": 40.14
+    },
+    {
+      "text": "Been building this moment for the whole damn week ⏱️",
+      "start": 40.14,
+      "end": 42.14
+    },
+    {
+      "text": "Nobody knows what happens after midnight 🌌",
+      "start": 42.14,
+      "end": 45.86
+    },
+    {
+      "text": "Nobody sees what we do in the low light 🕯️",
+      "start": 45.86,
+      "end": 49.78
+    },
+    {
+      "text": "Everything I want, I take with my own hands 🤲",
+      "start": 49.78,
+      "end": 53.62
+    },
+    {
+      "text": "Baby understand, baby understand 💭",
+      "start": 53.62,
+      "end": 57.88
+    },
+    {
+      "text": "Rio nights, Rio nights 🌃",
+      "start": 59.24,
+      "end": 61.16
+    },
+    {
+      "text": "Everything looks better in the low low lights 💡",
+      "start": 61.16,
+      "end": 63.3
+    },
+    {
+      "text": "Rio nights, Rio nights 🌃",
+      "start": 63.3,
+      "end": 65.12
+    },
+    {
+      "text": "Baby that's where Neya comes alive ⚡",
+      "start": 65.12,
+      "end": 67.36
+    },
+    {
+      "text": "Kiss the sky then hit the floor 💃",
+      "start": 67.36,
+      "end": 69.28
+    },
+    {
+      "text": "Give me everything and then give more 🔥",
+      "start": 69.28,
+      "end": 71.24
+    },
+    {
+      "text": "Rio nights, Rio nights 🌃",
+      "start": 71.24,
+      "end": 73.12
+    },
+    {
+      "text": "Nobody sees us but the stars tonight ✨",
+      "start": 73.12,
+      "end": 77.64
+    },
+    {
+      "text": "Rooftop 🏙️",
+      "start": 82.42,
+      "end": 83.06
+    },
+    {
+      "text": "Alone... 🌙",
+      "start": 85.96,
+      "end": 86.68
+    },
+    {
+      "text": "He asked if I was real 🤨",
+      "start": 89.16,
+      "end": 91.64
+    },
+    {
+      "text": "I laughed and walked away 😌",
+      "start": 91.64,
+      "end": 93.38
+    },
+    {
+      "text": "Some questions don't deserve 🚫",
+      "start": 93.38,
+      "end": 95.68
+    },
+    {
+      "text": "A single word to say 🤐",
+      "start": 95.68,
+      "end": 97.34
+    },
+    {
+      "text": "I'm the one they write about 📝",
+      "start": 97.34,
+      "end": 99.64
+    },
+    {
+      "text": "But never really know 🌫️",
+      "start": 99.64,
+      "end": 101.78
+    },
+    {
+      "text": "Neya's just a shadow in the afterglow 👤",
+      "start": 101.78,
+      "end": 104.62
+    },
+    {
+      "text": "Rio... nights... come here... 🌃",
+      "start": 105.38,
+      "end": 107.08
+    },
+    {
+      "text": "Rio nights, Rio nights 🌃",
+      "start": 107.08,
+      "end": 109.16
+    },
+    {
+      "text": "Everything looks better in the low low lights 💡",
+      "start": 109.16,
+      "end": 111.22
+    },
+    {
+      "text": "Rio nights, Rio nights 🌃",
+      "start": 111.22,
+      "end": 113.12
+    },
+    {
+      "text": "Baby that's where Neya comes alive ⚡",
+      "start": 113.12,
+      "end": 115.14
+    },
+    {
+      "text": "Nobody knows my real face 🎭",
+      "start": 115.14,
+      "end": 117.12
+    },
+    {
+      "text": "Nobody's ever gonna take my place 👑",
+      "start": 117.12,
+      "end": 119.42
+    },
+    {
+      "text": "Rio nights, Rio nights 🌃",
+      "start": 119.42,
+      "end": 121.32
+    },
+    {
+      "text": "Only ghost you'll chase tonight 👻",
+      "start": 121.32,
+      "end": 124.12
+    },
+    {
+      "text": "Rio nights... 🌃",
+      "start": 129.78,
+      "end": 131.26
+    },
+    {
+      "text": "Only Neya... 👤",
+      "start": 144.12,
+      "end": 145.34
+    },
+    {
+      "text": "Only Rio... 🌃",
+      "start": 145.76,
+      "end": 147.16
+    },
+    {
+      "text": "Only nights... 🌙",
+      "start": 148.12,
+      "end": 149.5
+    },
+    {
+      "text": "Only nights... 🌙",
+      "start": 149.84,
+      "end": 151.34
+    }
+  ]
+}

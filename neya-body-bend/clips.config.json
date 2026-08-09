@@ -1,0 +1,227 @@
+{
+  "$comment": "Source of truth for the neya-body-bend composition. Edit this file only, then run npm run build:composition. VISUAL IS A PLACEHOLDER (reused On My Wave poster) pending real art/clip from the user.",
+  "width": 1080,
+  "height": 1920,
+  "duration": 178.774,
+  "audio": "assets/body-bend-neya.wav",
+  "poster": "assets/placeholder-poster.png",
+  "clips": [
+    {
+      "src": "assets/placeholder-poster.png",
+      "type": "image",
+      "duration": 178.774
+    }
+  ],
+  "lyrics": [
+    {
+      "text": "You came in slow, then you took the floor 🔥",
+      "start": 15.28,
+      "end": 20.26
+    },
+    {
+      "text": "Gold on your skin, got me wanting more ✨",
+      "start": 20.26,
+      "end": 24.42
+    },
+    {
+      "text": "Lean to the left, then you switched that waist 💃",
+      "start": 24.42,
+      "end": 28.36
+    },
+    {
+      "text": "One little smile, and I lost my place 😍",
+      "start": 28.36,
+      "end": 32.72
+    },
+    {
+      "text": "You make it hard to act all cool 😤",
+      "start": 32.72,
+      "end": 36.82
+    },
+    {
+      "text": "That you move so clean, like you break the rules 🚫",
+      "start": 36.82,
+      "end": 41.74
+    },
+    {
+      "text": "Come closer now, don't let go 🤏",
+      "start": 41.74,
+      "end": 44.08
+    },
+    {
+      "text": "One two step, then you take control 💫",
+      "start": 44.08,
+      "end": 45.96
+    },
+    {
+      "text": "Hands on your hips, make the room obey 👐",
+      "start": 45.96,
+      "end": 48.06
+    },
+    {
+      "text": "Say my name once, then you pull away 😮‍💨",
+      "start": 48.06,
+      "end": 50.48
+    },
+    {
+      "text": "Body bend, body bend, do it again, do it again 🔁",
+      "start": 50.48,
+      "end": 55.76
+    },
+    {
+      "text": "Body bend, body bend, you got the fire, my friend 🔥",
+      "start": 55.76,
+      "end": 60.06
+    },
+    {
+      "text": "Body bend, body bend, everybody watch you win 👀",
+      "start": 60.06,
+      "end": 64.42
+    },
+    {
+      "text": "Body bend, body bend, take it low, bring it in ⬇️",
+      "start": 64.42,
+      "end": 68.66
+    },
+    {
+      "text": "Take it low, bring it in ⬇️",
+      "start": 73.9,
+      "end": 75.98
+    },
+    {
+      "text": "Short skirt, skirt swing, and your chain too loud ⛓️",
+      "start": 75.98,
+      "end": 78.14
+    },
+    {
+      "text": "Every eye in here locked on your style 👁️",
+      "start": 78.14,
+      "end": 80.28
+    },
+    {
+      "text": "You got that drip with the red bull grin 😏",
+      "start": 80.28,
+      "end": 82.28
+    },
+    {
+      "text": "When you back it up, I fall right in 🫠",
+      "start": 82.28,
+      "end": 84.48
+    },
+    {
+      "text": "Now one step back, then you bounce right around 🔄",
+      "start": 84.48,
+      "end": 86.66
+    },
+    {
+      "text": "Floor shake now when you wear that crown 👑",
+      "start": 86.66,
+      "end": 88.74
+    },
+    {
+      "text": "No slow talk, you just set that pace ⏱️",
+      "start": 88.74,
+      "end": 90.7
+    },
+    {
+      "text": "Turn the whole room hot with one way she chasing 🌡️",
+      "start": 90.7,
+      "end": 92.82
+    },
+    {
+      "text": "Come closer now, don't let go 🤏",
+      "start": 92.82,
+      "end": 94.52
+    },
+    {
+      "text": "One two step, then you take control 💫",
+      "start": 94.52,
+      "end": 96.5
+    },
+    {
+      "text": "Hands on your hips, make the room obey 👐",
+      "start": 96.5,
+      "end": 98.58
+    },
+    {
+      "text": "Say my name once, then you pull away 😮‍💨",
+      "start": 98.58,
+      "end": 101.0
+    },
+    {
+      "text": "Body bend, body bend, do it again, do it again 🔁",
+      "start": 101.0,
+      "end": 106.34
+    },
+    {
+      "text": "Body bend, body bend, you got the fire, my friend 🔥",
+      "start": 106.34,
+      "end": 110.58
+    },
+    {
+      "text": "Body bend, body bend, everybody watch you win 👀",
+      "start": 110.58,
+      "end": 114.8
+    },
+    {
+      "text": "Body bend, body bend, take it low, bring it in ⬇️",
+      "start": 114.8,
+      "end": 118.5
+    },
+    {
+      "text": "Take it low, bring it in ⬇️",
+      "start": 124.14,
+      "end": 127.1
+    },
+    {
+      "text": "Step by step, you change the air 👣",
+      "start": 127.1,
+      "end": 131.44
+    },
+    {
+      "text": "One touchdown and I'm right there 🎯",
+      "start": 131.44,
+      "end": 135.2
+    },
+    {
+      "text": "Spin so quick, got me out my mind 🌀",
+      "start": 135.2,
+      "end": 139.44
+    },
+    {
+      "text": "When you move like that, I'm losing time ⏳",
+      "start": 139.44,
+      "end": 143.12
+    },
+    {
+      "text": "Body bend, body bend, do it again, do it again 🔁",
+      "start": 143.12,
+      "end": 148.0
+    },
+    {
+      "text": "Body bend, body bend, you got the fire, my friend 🔥",
+      "start": 148.0,
+      "end": 152.66
+    },
+    {
+      "text": "Body bend, body bend, everybody watch you win 👀",
+      "start": 152.66,
+      "end": 156.9
+    },
+    {
+      "text": "Body bend, body bend, take it low, bring it in ⬇️",
+      "start": 156.9,
+      "end": 161.04
+    },
+    {
+      "text": "Body bend, body bend, you got the fire, my friend 🔥",
+      "start": 161.04,
+      "end": 168.4
+    },
+    {
+      "text": "Body bend, body bend, you got the fire, my friend 🔥",
+      "start": 168.4,
+      "end": 176.9
+    }
+  ]
+}
