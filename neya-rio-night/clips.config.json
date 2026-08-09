@@ -1,14 +1,14 @@
 {
-  "$comment": "Source of truth for the neya-rio-night composition. Edit this file only, then run npm run build:composition. VISUAL IS A PLACEHOLDER (reused On My Wave poster) pending real art/clip from the user.",
+  "$comment": "Source of truth for the neya-rio-night composition. Edit this file only, then run npm run build:composition. Uses the shared Neya video clip (same one across all songs, per the user's instruction) instead of a per-song poster.",
   "width": 1080,
   "height": 1920,
   "duration": 164.88,
   "audio": "assets/rio-night-neya.wav",
-  "poster": "assets/placeholder-poster.png",
+  "poster": "assets/clip-poster.png",
   "clips": [
     {
-      "src": "assets/placeholder-poster.png",
-      "type": "image",
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
       "duration": 164.88
     }
   ],

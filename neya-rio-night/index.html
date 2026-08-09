@@ -38,7 +38,7 @@
       #clip-bg {
         position: absolute;
         inset: -60px;
-        background-image: url("assets/placeholder-poster.png");
+        background-image: url("assets/clip-poster.png");
         background-size: cover;
         background-position: 50% 30%;
         filter: blur(45px) brightness(0.55) saturate(1.3);
@@ -121,14 +121,16 @@
     >
       <div id="clip-bg"></div>
 
-      <img
+      <video
         id="clip-1"
         class="clip"
-        src="assets/placeholder-poster.png"
+        src="assets/neya-clip.mp4"
         data-start="0"
         data-duration="164.88"
         data-track-index="0"
-      />
+        muted
+        playsinline
+      ></video>
 
       <div
         id="lyric-1"
