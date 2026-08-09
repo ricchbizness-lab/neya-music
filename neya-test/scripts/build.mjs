@@ -20,7 +20,11 @@ const configPath = path.join(projectRoot, "clips.config.json");
 const outPath = path.join(projectRoot, "index.html");
 
 const config = JSON.parse(readFileSync(configPath, "utf8"));
-const { width, height, audio, clips, lyrics } = config;
+const { width, height, audio, clips, lyrics, poster } = config;
+
+if (!poster) {
+  throw new Error("clips.config.json: `poster` is required (blurred backdrop image behind the inset clip)");
+}
 
 if (!Array.isArray(clips) || clips.length === 0) {
   throw new Error("clips.config.json: `clips` must be a non-empty array");
@@ -146,7 +150,7 @@ const html = `<!doctype html>
       #clip-bg {
         position: absolute;
         inset: -60px;
-        background-image: url("assets/hf_20260526_225013_a148f707-f95f-4231-9952-368d1e40e359.png");
+        background-image: url("${poster}");
         background-size: cover;
         background-position: 50% 30%;
         filter: blur(45px) brightness(0.55) saturate(1.3);
