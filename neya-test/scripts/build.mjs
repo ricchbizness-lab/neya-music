@@ -54,7 +54,7 @@ const totalDuration = config.duration ?? clipsDuration;
 // which is both unnecessary for a non-moving source and far more expensive
 // at render time.
 const videoBlocks = clipsWithTiming
-  .map(({ src, start, duration, type }, i) => {
+  .map(({ src, start, duration, type, mediaStart }, i) => {
     if (type === "image") {
       return `      <img
         id="clip-${i + 1}"
@@ -65,13 +65,17 @@ const videoBlocks = clipsWithTiming
         data-track-index="0"
       />`;
     }
+    // `mediaStart` (optional) offsets into the source file — lets the same
+    // long take be cut away from and back to at a later point without
+    // re-encoding or trimming the file itself.
+    const mediaStartAttr = mediaStart ? `\n        data-media-start="${mediaStart}"` : "";
     return `      <video
         id="clip-${i + 1}"
         class="clip"
         src="${src}"
         data-start="${start}"
         data-duration="${duration}"
-        data-track-index="0"
+        data-track-index="0"${mediaStartAttr}
         muted
         playsinline
       ></video>`;

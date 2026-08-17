@@ -9,7 +9,85 @@
     {
       "src": "assets/neya-clip.mp4",
       "type": "video",
-      "duration": 177.267
+      "duration": 39.4,
+      "mediaStart": 0
+    },
+    {
+      "src": "assets/close-up/scene1.mp4",
+      "type": "video",
+      "duration": 5.0417
+    },
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 17.988,
+      "mediaStart": 39.4
+    },
+    {
+      "src": "assets/close-up/scene2.mp4",
+      "type": "video",
+      "duration": 5.0417
+    },
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 17.708,
+      "mediaStart": 57.388
+    },
+    {
+      "src": "assets/close-up/scene3.mp4",
+      "type": "video",
+      "duration": 5.0417
+    },
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 18.468,
+      "mediaStart": 75.096
+    },
+    {
+      "src": "assets/close-up/scene4.mp4",
+      "type": "video",
+      "duration": 5.0417
+    },
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 13.718,
+      "mediaStart": 93.564
+    },
+    {
+      "src": "assets/close-up/scene5.mp4",
+      "type": "video",
+      "duration": 5.0417
+    },
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 12.478,
+      "mediaStart": 107.282
+    },
+    {
+      "src": "assets/close-up/scene6.mp4",
+      "type": "video",
+      "duration": 5.056
+    },
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 13.704,
+      "mediaStart": 119.76
+    },
+    {
+      "src": "assets/close-up/outro.mp4",
+      "type": "video",
+      "duration": 5.0417
+    },
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 8.495,
+      "mediaStart": 133.464
     }
   ],
   "lyrics": [
