@@ -1,0 +1,12 @@
+{
+  "name": "neya-test",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:composition": "node scripts/build.mjs",
+    "dev": "npx --yes hyperframes@0.7.28 preview",
+    "check": "npx --yes hyperframes@0.7.28 lint && npx --yes hyperframes@0.7.28 validate && npx --yes hyperframes@0.7.28 inspect",
+    "render": "npx --yes hyperframes@0.7.28 render",
+    "publish": "npx --yes hyperframes@0.7.28 publish"
+  }
+}
