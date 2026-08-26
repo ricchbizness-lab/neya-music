@@ -45,6 +45,38 @@ successfully (3/3 renders of the same composition).
    composition in this sandbox — this is the reliable baseline, not a bug
    to keep chasing.
 
+### Final MP4 delivery: always re-encode audio to 320k, not whatever the compression pass defaults to
+
+`hyperframes render` itself outputs decent audio (~197kbps AAC) — that part
+is fine. The problem is downstream: the raw HyperFrames render is routinely
+100-250MB (over GitHub's 100MB push limit for anything longer than ~100s),
+so it gets re-encoded to fit. If that re-encode command doesn't explicitly
+set `-b:a`, ffmpeg/AAC defaults land low (observed 128-165kbps on past
+renders, and as low as 64kbps on ad-hoc chat-preview compressions) —
+audibly worse than the source.
+
+**Always pass `-b:a 320k` explicitly** on the compression pass that
+produces the committed "final" MP4:
+```
+ffmpeg -y -i <raw_render>.mp4 -c:v libx264 -crf 26 -preset fast -c:a aac -b:a 320k <final>.mp4
+```
+Adjust `-crf` up/down to hit the 100MB budget — audio at 320k adds only a
+few MB total for a 2-4 minute video, it is not the lever for controlling
+output size; video CRF is.
+
+**This does not require re-running the 90-200 minute HyperFrames capture.**
+Re-encoding an already-rendered MP4 (video+audio) with ffmpeg is a
+single-pass CPU encode of existing frames, typically 1-3 minutes for a
+2-4 minute 1080x1920 clip — not the frame-by-frame Chrome capture that is
+actually slow. Keep the raw HD render (outside the repo, e.g. in scratch)
+until the compressed version is verified, so a bad compression pass can be
+redone without re-capturing.
+
+Verify before committing:
+```
+ffprobe -v error -select_streams a:0 -show_entries stream=bit_rate <file>.mp4
+```
+
 ### If render speed genuinely needs to come down
 
 The bottleneck is CPU-bound software compositing (SwiftShader), not
