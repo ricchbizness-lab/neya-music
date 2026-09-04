@@ -1,0 +1,455 @@
+{
+  "$comment": "Source of truth for the neya-test composition. Edit this file only, then run `npm run build:composition`. `clips` (video track) and `lyrics` (caption track) are independent — clip data-start is computed from cumulative durations, lyric timing comes straight from `start`/`end` (e.g. a transcript). Do not add data-start by hand.",
+  "width": 1080,
+  "height": 1920,
+  "duration": 177.267,
+  "audio": "assets/on-my-wav-neya.mp3",
+  "poster": "assets/hf_20260526_225013_a148f707-f95f-4231-9952-368d1e40e359.png",
+  "clips": [
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 39.4,
+      "mediaStart": 0
+    },
+    {
+      "src": "assets/close-up/scene1.mp4",
+      "type": "video",
+      "duration": 5.0417
+    },
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 17.988,
+      "mediaStart": 39.4
+    },
+    {
+      "src": "assets/close-up/scene2.mp4",
+      "type": "video",
+      "duration": 5.0417
+    },
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 17.708,
+      "mediaStart": 57.388
+    },
+    {
+      "src": "assets/close-up/scene3.mp4",
+      "type": "video",
+      "duration": 5.0417
+    },
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 18.468,
+      "mediaStart": 75.096
+    },
+    {
+      "src": "assets/close-up/scene4.mp4",
+      "type": "video",
+      "duration": 5.0417
+    },
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 13.718,
+      "mediaStart": 93.564
+    },
+    {
+      "src": "assets/close-up/scene5.mp4",
+      "type": "video",
+      "duration": 5.0417
+    },
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 12.478,
+      "mediaStart": 107.282
+    },
+    {
+      "src": "assets/close-up/scene6.mp4",
+      "type": "video",
+      "duration": 5.056
+    },
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 13.704,
+      "mediaStart": 119.76
+    },
+    {
+      "src": "assets/close-up/outro.mp4",
+      "type": "video",
+      "duration": 5.0417
+    },
+    {
+      "src": "assets/neya-clip.mp4",
+      "type": "video",
+      "duration": 8.495,
+      "mediaStart": 133.464
+    }
+  ],
+  "lyrics": [
+    {
+      "text": "Mmm... 🎶",
+      "start": 0,
+      "end": 0.8
+    },
+    {
+      "text": "Closer 😏",
+      "start": 3.68,
+      "end": 4.9
+    },
+    {
+      "text": "Not yet ⏳",
+      "start": 6.48,
+      "end": 7.82
+    },
+    {
+      "text": "Mmm mmm mmm, yeah, not yet 🎶",
+      "start": 10.871,
+      "end": 14.988
+    },
+    {
+      "text": "Baby I don't need your validation 💪",
+      "start": 16.271,
+      "end": 17.951
+    },
+    {
+      "text": "Got myself into my own foundation 🏗️",
+      "start": 17.951,
+      "end": 19.57
+    },
+    {
+      "text": "Everybody watching from the sideline 👀",
+      "start": 19.58,
+      "end": 21.88
+    },
+    {
+      "text": "Wondering how I keep on making it shine ✨",
+      "start": 21.88,
+      "end": 23.74
+    },
+    {
+      "text": "Every step I take is intentional 👣",
+      "start": 23.74,
+      "end": 25.4
+    },
+    {
+      "text": "Every look I give is memorable 😍",
+      "start": 25.92,
+      "end": 27.34
+    },
+    {
+      "text": "You can copy but you can't recreate 🚫",
+      "start": 27.34,
+      "end": 29.46
+    },
+    {
+      "text": "Baby that's my superpower state 🦸‍♀️",
+      "start": 29.46,
+      "end": 31.68
+    },
+    {
+      "text": "Don't you try to slow me down 🛑",
+      "start": 31.68,
+      "end": 33.88
+    },
+    {
+      "text": "I don't ever look around 🙅‍♀️",
+      "start": 33.88,
+      "end": 35.8
+    },
+    {
+      "text": "Eyes on the prize, no distraction 🎯",
+      "start": 35.8,
+      "end": 37.28
+    },
+    {
+      "text": "Everything I want, main attraction ⭐",
+      "start": 37.28,
+      "end": 39.4
+    },
+    {
+      "text": "I'm on my wave, on my wave 🌊",
+      "start": 39.4,
+      "end": 42.2
+    },
+    {
+      "text": "Nobody move like this, nobody play on my wave 🌊",
+      "start": 42.2,
+      "end": 46.2
+    },
+    {
+      "text": "Baby that's Neya, that's just my way 👑",
+      "start": 46.2,
+      "end": 48.76
+    },
+    {
+      "text": "Body moving hips don't lie 💃",
+      "start": 48.76,
+      "end": 50.24
+    },
+    {
+      "text": "Watch me, watch me, watch me fly 👀",
+      "start": 50.24,
+      "end": 52.72
+    },
+    {
+      "text": "On my wave, on my wave 🌊",
+      "start": 52.72,
+      "end": 54.61
+    },
+    {
+      "text": "Nobody gonna take this away 🙅‍♀️",
+      "start": 54.61,
+      "end": 56.78
+    },
+    {
+      "text": "Nobody gonna take this away 🙅‍♀️",
+      "start": 62.43,
+      "end": 64.75
+    },
+    {
+      "text": "They be asking how I always stay 🤷‍♀️",
+      "start": 71.51,
+      "end": 72.87
+    },
+    {
+      "text": "Winning, simple answer 🏆",
+      "start": 72.87,
+      "end": 74.08
+    },
+    {
+      "text": "Been on it from the beginning ⏳",
+      "start": 74.08,
+      "end": 75.37
+    },
+    {
+      "text": "No shortcuts, no fake connections 🚫",
+      "start": 75.37,
+      "end": 77.59
+    },
+    {
+      "text": "Just me building all my own directions 🧭",
+      "start": 77.59,
+      "end": 79.59
+    },
+    {
+      "text": "Every level up was earned in silence 📈",
+      "start": 80.26,
+      "end": 82.18
+    },
+    {
+      "text": "Every crown I wear, I paid in patience, baby that's the difference between me and them 👑",
+      "start": 82.28,
+      "end": 85.18
+    },
+    {
+      "text": "I don't chase 🚫",
+      "start": 85.18,
+      "end": 86.14
+    },
+    {
+      "text": "I create the trend 🔥",
+      "start": 86.22,
+      "end": 87.22
+    },
+    {
+      "text": "Don't you try to slow me down 🛑",
+      "start": 87.22,
+      "end": 89.84
+    },
+    {
+      "text": "I don't ever look around 🙅‍♀️",
+      "start": 89.84,
+      "end": 91.68
+    },
+    {
+      "text": "Eyes on the prize, no distraction 🎯",
+      "start": 91.68,
+      "end": 93.3
+    },
+    {
+      "text": "Everything I want, main attraction ⭐",
+      "start": 93.3,
+      "end": 95.26
+    },
+    {
+      "text": "I'm on my wave 🌊",
+      "start": 95.26,
+      "end": 96.82
+    },
+    {
+      "text": "On my wave 🌊",
+      "start": 96.9,
+      "end": 97.8
+    },
+    {
+      "text": "Nobody move like this 🌊",
+      "start": 97.8,
+      "end": 99.68
+    },
+    {
+      "text": "Nobody play 🙅‍♀️",
+      "start": 99.76,
+      "end": 100.72
+    },
+    {
+      "text": "I'm on my wave 🌊",
+      "start": 100.72,
+      "end": 101.8
+    },
+    {
+      "text": "On my wave 🌊",
+      "start": 101.8,
+      "end": 102.41
+    },
+    {
+      "text": "Baby that's Neya, that's just my way 👑",
+      "start": 102.41,
+      "end": 104.76
+    },
+    {
+      "text": "Body moving hips don't lie 💃",
+      "start": 104.76,
+      "end": 106.26
+    },
+    {
+      "text": "Watch me, watch me fly 👀",
+      "start": 106.26,
+      "end": 108.69
+    },
+    {
+      "text": "On my wave, on my wave 🌊",
+      "start": 108.69,
+      "end": 110.63
+    },
+    {
+      "text": "Nobody gonna take this away 🙅‍♀️",
+      "start": 110.63,
+      "end": 112.81
+    },
+    {
+      "text": "Mmm... 🎶",
+      "start": 113.37,
+      "end": 116.7
+    },
+    {
+      "text": "Watch this 👀",
+      "start": 116.7,
+      "end": 120.05
+    },
+    {
+      "text": "Mmm... 🎶",
+      "start": 123.6,
+      "end": 124.74
+    },
+    {
+      "text": "I'm on my wave 🌊",
+      "start": 127.45,
+      "end": 128.89
+    },
+    {
+      "text": "On my wave 🌊",
+      "start": 128.89,
+      "end": 129.77
+    },
+    {
+      "text": "Nobody move like this 🌊",
+      "start": 129.77,
+      "end": 131.71
+    },
+    {
+      "text": "Nobody play 🙅‍♀️",
+      "start": 131.77,
+      "end": 132.79
+    },
+    {
+      "text": "I'm on my wave, on my wave 🌊",
+      "start": 132.79,
+      "end": 134.19
+    },
+    {
+      "text": "Baby that's Neya, 👑",
+      "start": 134.19,
+      "end": 135.25
+    },
+    {
+      "text": "That's just my way 👑",
+      "start": 135.51,
+      "end": 136.77
+    },
+    {
+      "text": "Body moving hips don't lie 💃",
+      "start": 136.77,
+      "end": 138.23
+    },
+    {
+      "text": "Watch me, 👀",
+      "start": 138.23,
+      "end": 138.87
+    },
+    {
+      "text": "Watch me, watch me fly 👀",
+      "start": 138.91,
+      "end": 140.33
+    },
+    {
+      "text": "I'm on my wave, 🌊",
+      "start": 140.33,
+      "end": 141.97
+    },
+    {
+      "text": "on my wave 🌊",
+      "start": 141.97,
+      "end": 142.73
+    },
+    {
+      "text": "Nobody gonna take this away 🙅‍♀️",
+      "start": 142.73,
+      "end": 144.97
+    },
+    {
+      "text": "Hands up if you're on my wave 🙌",
+      "start": 144.97,
+      "end": 146.25
+    },
+    {
+      "text": "Show me how you move today 💃",
+      "start": 146.25,
+      "end": 147.95
+    },
+    {
+      "text": "On my wave, on my wave 🌊",
+      "start": 148.69,
+      "end": 150.76
+    },
+    {
+      "text": "Baby come and ride this wave 🌊",
+      "start": 150.76,
+      "end": 152.89
+    },
+    {
+      "text": "Mmm... 🎶",
+      "start": 153.73,
+      "end": 154.85
+    },
+    {
+      "text": "Watch me, 👀",
+      "start": 157.41,
+      "end": 159.27
+    },
+    {
+      "text": "Watch me... 👀",
+      "start": 159.63,
+      "end": 160.29
+    },
+    {
+      "text": "That's just my way 👑",
+      "start": 167.44,
+      "end": 169.25
+    }
+  ]
+}
